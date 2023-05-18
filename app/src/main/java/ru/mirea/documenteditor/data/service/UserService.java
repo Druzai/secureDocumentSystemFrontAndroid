@@ -9,12 +9,14 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import ru.mirea.documenteditor.data.payload.AnswerBase;
+import ru.mirea.documenteditor.data.payload.AnswerBaseObj;
 import ru.mirea.documenteditor.data.payload.DocumentRight;
+import ru.mirea.documenteditor.data.payload.MyUserInfo;
 import ru.mirea.documenteditor.data.payload.UserInfo;
 
 public interface UserService {
     @GET("/api/user/me")
-    Call<AnswerBase<Object>> getMe(@Header("Authorization") String bearer);
+    Call<AnswerBaseObj<MyUserInfo>> getMe(@Header("Authorization") String bearer);
 
     @GET("/api/user/{id}")
     Call<AnswerBase<Object>> getUser(@Header("Authorization") String bearer, @Path("id") Long userId);

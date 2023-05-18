@@ -6,30 +6,33 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.mirea.documenteditor.data.payload.AnswerBase;
+import ru.mirea.documenteditor.data.payload.AnswerBaseObj;
+import ru.mirea.documenteditor.data.payload.MyUserInfo;
 
 public class Utilities {
     public static void checkIfLoggedIn(MutableLiveData<Boolean> isSignedIn) {
         String accessKey = PreferenceManager.getInstance().getString(Constants.ACCESS_KEY);
         if (accessKey != null) {
-            Call<AnswerBase<Object>> call = RetrofitManager.getInstance().getUserService().getMe(
+            Call<AnswerBaseObj<MyUserInfo>> call = RetrofitManager.getInstance().getUserService().getMe(
                     RetrofitManager.getInstance().makeHeaderBearer(accessKey)
             );
-            call.enqueue(new Callback<AnswerBase<Object>>() {
+            call.enqueue(new Callback<AnswerBaseObj<MyUserInfo>>() {
                 @Override
-                public void onResponse(@NonNull Call<AnswerBase<Object>> call, @NonNull Response<AnswerBase<Object>> response) {
+                public void onResponse(@NonNull Call<AnswerBaseObj<MyUserInfo>> call, @NonNull Response<AnswerBaseObj<MyUserInfo>> response) {
                     if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
-                        PreferenceManager.getInstance().putString(Constants.USER_NAME, (String) response.body().getResult().get("username"));
+                        PreferenceManager.getInstance().putString(Constants.USER_NAME, response.body().getResult().getUsername());
                         isSignedIn.setValue(true);
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<AnswerBase<Object>> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<AnswerBaseObj<MyUserInfo>> call, @NonNull Throwable t) {
                     Log.e(Constants.LOG_TAG, t.getMessage());
                     isSignedIn.setValue(false);
                 }
@@ -113,14 +116,22 @@ public class Utilities {
     }
     * */
 
-    public static String getAuthorizationBearer(){
+    public static Optional<String> getAuthorizationBearer(){
         String accessKey = PreferenceManager.getInstance().getString(Constants.ACCESS_KEY);
-        return RetrofitManager.getInstance().makeHeaderBearer(accessKey);
+        if (accessKey == null){
+            return Optional.empty();
+        } else {
+            return Optional.ofNullable(RetrofitManager.getInstance().makeHeaderBearer(accessKey));
+        }
     }
 
     public static boolean fetchUserKey() {
+        Optional<String> token = getAuthorizationBearer();
+        if (!token.isPresent()){
+            return false;
+        }
         Call<AnswerBase<String>> call = RetrofitManager.getInstance().getCipherService().getKey(
-                getAuthorizationBearer()
+                token.get()
         );
         try {
             Response<AnswerBase<String>> response = call.execute();

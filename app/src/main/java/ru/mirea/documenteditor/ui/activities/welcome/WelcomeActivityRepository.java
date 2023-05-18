@@ -6,7 +6,7 @@ import ru.mirea.documenteditor.util.Utilities;
 
 public class WelcomeActivityRepository {
 
-    public static WelcomeActivityRepository welcomeActivityRepository;
+    private static WelcomeActivityRepository welcomeActivityRepository;
 
     public static WelcomeActivityRepository getInstance() {
         if (welcomeActivityRepository == null)
