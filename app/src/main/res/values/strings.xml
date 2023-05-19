@@ -21,4 +21,6 @@
     <string name="menu_logout">Выйти</string>
     <string name="menu_my_profile">Мой профиль</string>
     <string name="menu_all_users">Все пользователи</string>
+    <string name="menu_my_documents">Мои документы</string>
+    <string name="title_activity_new_document">Новый документ</string>
 </resources>

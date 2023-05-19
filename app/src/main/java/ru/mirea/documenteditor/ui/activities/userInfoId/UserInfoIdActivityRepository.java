@@ -62,6 +62,7 @@ public class UserInfoIdActivityRepository {
     public void postRights(MutableLiveData<Boolean> isDone, DocumentRight documentRight) {
         Optional<String> token = Utilities.getAuthorizationBearer();
         if (!token.isPresent()){
+            isDone.setValue(false);
             return;
         }
         Call<AnswerBase<DocumentRight>> call = retrofitManager.getUserService().postChangeRights(
@@ -72,6 +73,8 @@ public class UserInfoIdActivityRepository {
             public void onResponse(@NonNull Call<AnswerBase<DocumentRight>> call, @NonNull Response<AnswerBase<DocumentRight>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
                     isDone.setValue(true);
+                } else {
+                    isDone.setValue(false);
                 }
             }
 

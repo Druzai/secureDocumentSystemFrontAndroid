@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="1"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:rowCount="2">
+
+    <LinearLayout
+        android:id="@+id/linearLayout_document_name_open"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/document_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="Документ: " />
+
+        <Button
+            android:id="@+id/bt_document_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|clip_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Открыть"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_document_owner_delete"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/document_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="Владелец: " />
+
+        <Button
+            android:id="@+id/bt_document_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|clip_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:backgroundTint="@color/red"
+            android:text="Удалить"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</GridLayout>

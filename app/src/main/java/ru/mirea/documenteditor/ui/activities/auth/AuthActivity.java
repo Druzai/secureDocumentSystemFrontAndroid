@@ -12,7 +12,7 @@ import ru.mirea.documenteditor.R;
 import ru.mirea.documenteditor.data.model.auth.LoginModel;
 import ru.mirea.documenteditor.data.model.auth.RegisterModel;
 import ru.mirea.documenteditor.databinding.ActivityAuthBinding;
-import ru.mirea.documenteditor.ui.activities.MainActivity;
+import ru.mirea.documenteditor.ui.activities.main.MainActivity;
 import ru.mirea.documenteditor.ui.fragments.auth.LoginFragment;
 import ru.mirea.documenteditor.ui.fragments.auth.RegisterFragment;
 

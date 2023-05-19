@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import ru.mirea.documenteditor.databinding.ActivityWelcomeBinding;
-import ru.mirea.documenteditor.ui.activities.MainActivity;
+import ru.mirea.documenteditor.ui.activities.main.MainActivity;
 import ru.mirea.documenteditor.ui.activities.auth.AuthActivity;
 
 

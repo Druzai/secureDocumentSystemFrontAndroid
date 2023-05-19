@@ -1,11 +1,10 @@
 package ru.mirea.documenteditor.util;
 
-import android.content.Context;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.mirea.documenteditor.data.service.AuthService;
 import ru.mirea.documenteditor.data.service.CipherService;
+import ru.mirea.documenteditor.data.service.DocumentService;
 import ru.mirea.documenteditor.data.service.UserService;
 
 public class RetrofitManager {
@@ -14,6 +13,7 @@ public class RetrofitManager {
     private AuthService authService;
     private CipherService cipherService;
     private UserService userService;
+    private DocumentService documentService;
 
     private static RetrofitManager instance;
 
@@ -32,6 +32,7 @@ public class RetrofitManager {
         authService = retrofit.create(AuthService.class);
         cipherService = retrofit.create(CipherService.class);
         userService = retrofit.create(UserService.class);
+        documentService = retrofit.create(DocumentService.class);
     }
 
     public String makeHeaderBearer(String token) {
@@ -48,5 +49,9 @@ public class RetrofitManager {
 
     public UserService getUserService() {
         return userService;
+    }
+
+    public DocumentService getDocumentService() {
+        return documentService;
     }
 }

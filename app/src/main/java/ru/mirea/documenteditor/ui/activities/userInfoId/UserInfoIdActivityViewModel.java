@@ -18,7 +18,6 @@ public class UserInfoIdActivityViewModel extends ViewModel {
         mUserIdInfo = new MutableLiveData<>();
         userInfoIdActivityRepository = UserInfoIdActivityRepository.getInstance();
         userInfoIdActivityRepository.init();
-//        userInfoIdActivityRepository.checkLogin(isSignedIn);
     }
 
     public MutableLiveData<UserIdInfo> getUserIdInfo(){

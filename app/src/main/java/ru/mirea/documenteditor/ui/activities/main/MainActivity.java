@@ -1,5 +1,6 @@
-package ru.mirea.documenteditor.ui.activities;
+package ru.mirea.documenteditor.ui.activities.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import ru.mirea.documenteditor.R;
 import ru.mirea.documenteditor.databinding.ActivityMainBinding;
 import ru.mirea.documenteditor.ui.activities.auth.AuthActivity;
+import ru.mirea.documenteditor.ui.activities.newDocument.NewDocumentActivity;
 import ru.mirea.documenteditor.util.Constants;
 import ru.mirea.documenteditor.util.PreferenceManager;
 
@@ -40,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "New document!", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+                Intent myIntent = new Intent(getApplicationContext(), NewDocumentActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(myIntent);
             }
         });
         drawerLayout = binding.drawerLayout;
@@ -50,12 +53,10 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_my_profile, R.id.nav_my_documents, R.id.nav_all_users
         )
                 .setOpenableLayout(drawerLayout)
                 .build();
-//        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
-//        NavController navController = navHostFragment.getNavController();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);

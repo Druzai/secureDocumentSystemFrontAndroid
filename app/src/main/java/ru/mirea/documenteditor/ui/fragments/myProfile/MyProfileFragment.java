@@ -47,8 +47,8 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("usernameTextView", usernameTextView.getText().toString());
-        outState.putString("rolesTextView", rolesTextView.getText().toString());
+        outState.putString("usernameTextView", myProfileViewModel.getUsernameText().getValue());
+        outState.putString("rolesTextView", myProfileViewModel.getRolesText().getValue());
     }
 
     @Override
