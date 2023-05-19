@@ -1,6 +1,7 @@
 package ru.mirea.documenteditor.ui.fragments.allUsers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import ru.mirea.documenteditor.data.adapter.UsersAdapter;
 import ru.mirea.documenteditor.data.payload.UserInfo;
 import ru.mirea.documenteditor.databinding.FragmentAllUsersBinding;
+import ru.mirea.documenteditor.ui.activities.userInfoId.UserInfoIdActivity;
 
 public class AllUsersFragment extends Fragment {
 
@@ -59,13 +61,18 @@ public class AllUsersFragment extends Fragment {
         outState.putParcelableArrayList("arrayUserInfo", allUsersViewModel.getArrayUserInfo().getValue());
     }
 
-    private void setUpRecycleView(ArrayList<UserInfo> arrayUserInfo){
+    private void setUpRecycleView(ArrayList<UserInfo> arrayUserInfo) {
         UsersAdapter adapter = new UsersAdapter(arrayUserInfo);
         adapter.setOnItemClickListener(new UsersAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Integer id = arrayUserInfo.get(position).getId();
-                Toast.makeText(context, id + " was clicked!", Toast.LENGTH_SHORT).show();
+                String name = arrayUserInfo.get(position).getUsername();
+                Toast.makeText(context, "Загружаем профиль " + name, Toast.LENGTH_SHORT).show();
+
+                Intent myIntent = new Intent(context, UserInfoIdActivity.class);
+                myIntent.putExtra("id", id);
+                context.startActivity(myIntent);
             }
         });
         rvUsers.setAdapter(adapter);

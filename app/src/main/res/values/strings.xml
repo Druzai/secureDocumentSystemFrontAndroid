@@ -9,6 +9,7 @@
 
     <string name="menu_gallery">Gallery</string>
     <string name="title_activity_auth">Авторизация</string>
+    <string name="title_activity_user_info_id">О пользователе</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
