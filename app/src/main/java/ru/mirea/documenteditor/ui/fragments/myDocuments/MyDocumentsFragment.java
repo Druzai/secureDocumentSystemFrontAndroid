@@ -1,6 +1,7 @@
 package ru.mirea.documenteditor.ui.fragments.myDocuments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import ru.mirea.documenteditor.data.adapter.DocumentsAdapter;
 import ru.mirea.documenteditor.data.payload.DocumentInfo;
 import ru.mirea.documenteditor.databinding.FragmentMyDocumentsBinding;
+import ru.mirea.documenteditor.ui.activities.documentId.DocumentIdActivity;
 
 public class MyDocumentsFragment extends Fragment {
 
@@ -79,9 +81,9 @@ public class MyDocumentsFragment extends Fragment {
                     String name = arrayDocumentInfo.get(position).getName();
                     Toast.makeText(context, "Загружаем документ " + name, Toast.LENGTH_SHORT).show();
 
-//                Intent myIntent = new Intent(context, UserInfoIdActivity.class);
-//                myIntent.putExtra("id", id);
-//                context.startActivity(myIntent);
+                    Intent myIntent = new Intent(context, DocumentIdActivity.class);
+                    myIntent.putExtra("id", id);
+                    context.startActivity(myIntent);
                 }
             });
 

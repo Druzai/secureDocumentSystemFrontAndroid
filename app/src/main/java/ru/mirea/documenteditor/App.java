@@ -2,6 +2,7 @@ package ru.mirea.documenteditor;
 
 import android.app.Application;
 
+import ru.mirea.documenteditor.util.CipherManager;
 import ru.mirea.documenteditor.util.PreferenceManager;
 import ru.mirea.documenteditor.util.RetrofitManager;
 
@@ -12,5 +13,6 @@ public class App extends Application {
         super.onCreate();
         PreferenceManager.getInstance().init(getApplicationContext());
         RetrofitManager.getInstance().init();
+        CipherManager.getInstance().init();
     }
 }

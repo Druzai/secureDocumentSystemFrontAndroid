@@ -32,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
             if (isSignedIn) {
                 welcomeActivityViewModel.getGotUserKey().observe(WelcomeActivity.this, gotUserKey -> {
                     if (!gotUserKey){
-                        Toast.makeText(getApplicationContext(), "Ключ шифрования пользователя не был получен!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Ключ шифрования пользователя не был получен!", Toast.LENGTH_SHORT).show();
                     }
                     startMainActivity();
                 });

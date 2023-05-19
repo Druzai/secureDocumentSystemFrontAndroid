@@ -68,6 +68,12 @@ public class NewDocumentActivity extends AppCompatActivity {
         btnCreateDocument.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String newName = nameEditText.getText().toString();
+                if (newName.trim().length() == 0){
+                    Toast.makeText(getApplicationContext(), "Имя документа не может быть пустым или состоять из пробельных символов!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 MutableLiveData<Boolean> isDone = new MutableLiveData<>();
                 newDocumentActivityViewModel.postNewDocument(isDone);
                 isDone.observe(NewDocumentActivity.this, bIsDone -> {

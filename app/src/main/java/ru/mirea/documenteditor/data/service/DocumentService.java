@@ -9,6 +9,8 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import ru.mirea.documenteditor.data.payload.AnswerBase;
+import ru.mirea.documenteditor.data.payload.AnswerBaseObj;
+import ru.mirea.documenteditor.data.payload.DocumentIdEditor;
 import ru.mirea.documenteditor.data.payload.DocumentInfo;
 
 public interface DocumentService {
@@ -16,7 +18,7 @@ public interface DocumentService {
     Call<AnswerBase<List<DocumentInfo>>> getDocuments(@Header("Authorization") String bearer);
 
     @GET("/api/document/{id}")
-    Call<AnswerBase<Object>> getDocument(@Header("Authorization") String bearer, @Path("id") Integer documentId);
+    Call<AnswerBaseObj<DocumentIdEditor>> getDocument(@Header("Authorization") String bearer, @Path("id") Integer documentId);
 
     @POST("/api/document/new")
     Call<AnswerBase<DocumentInfo>> postNewDocument(@Header("Authorization") String bearer, @Body DocumentInfo documentInfo);

@@ -23,4 +23,7 @@
     <string name="menu_all_users">Все пользователи</string>
     <string name="menu_my_documents">Мои документы</string>
     <string name="title_activity_new_document">Новый документ</string>
+    <string name="title_activity_document_id">Документ</string>
+    <string name="action_save_text">Сохранить</string>
+    <string name="action_go_back_text">Закрыть документ</string>
 </resources>
