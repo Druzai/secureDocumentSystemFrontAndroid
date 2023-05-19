@@ -2,6 +2,7 @@ package ru.mirea.documenteditor.ui.activities.welcome;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,21 +27,28 @@ public class WelcomeActivity extends AppCompatActivity {
         setObservers();
     }
 
-    private void setObservers(){
+    private void setObservers() {
         welcomeActivityViewModel.getIsSignedIn().observe(this, isSignedIn -> {
-            if (isSignedIn)
-                startMainActivity();
-            else
+            if (isSignedIn) {
+                welcomeActivityViewModel.getGotUserKey().observe(WelcomeActivity.this, gotUserKey -> {
+                    if (!gotUserKey){
+                        Toast.makeText(getApplicationContext(), "Ключ шифрования пользователя не был получен!", Toast.LENGTH_LONG).show();
+                    }
+                    startMainActivity();
+                });
+                welcomeActivityViewModel.fetchUserKey();
+            } else {
                 startAuthActivity();
+            }
         });
     }
 
-    private void startAuthActivity(){
+    private void startAuthActivity() {
         Intent registerLoginIntent = new Intent(this, AuthActivity.class);
         startActivity(registerLoginIntent);
     }
 
-    private void startMainActivity(){
+    private void startMainActivity() {
         Intent mainActivity = new Intent(this, MainActivity.class);
         startActivity(mainActivity);
     }

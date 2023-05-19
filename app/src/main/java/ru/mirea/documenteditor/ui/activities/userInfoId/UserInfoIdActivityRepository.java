@@ -42,7 +42,7 @@ public class UserInfoIdActivityRepository {
             return;
         }
         Call<AnswerBaseObj<UserIdInfo>> call = retrofitManager.getUserService().getUser(
-                token.get(), Long.valueOf(userId)
+                token.get(), userId
         );
         call.enqueue(new Callback<AnswerBaseObj<UserIdInfo>>() {
             @Override

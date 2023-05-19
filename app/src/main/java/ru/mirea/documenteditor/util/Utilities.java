@@ -72,82 +72,42 @@ public class Utilities {
         });
     }
 
-    /*
-    public static Optional<String> checkIfLoggedIn() {
+    public static Optional<String> getAuthorizationBearer() {
         String accessKey = PreferenceManager.getInstance().getString(Constants.ACCESS_KEY);
-        if (accessKey != null) {
-            Call<AnswerBase<Object>> call = RetrofitManager.getInstance().getUserService().getMe(
-                    RetrofitManager.getInstance().makeHeaderBearer(accessKey)
-            );
-            try {
-                Response<AnswerBase<Object>> response = call.execute();
-                if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
-                    return Optional.of((String) Objects.requireNonNull(response.body().getResult().get("username")));
-                }
-            } catch (IOException | RuntimeException e) {
-                Log.e(Constants.LOG_TAG, e.getMessage());
-            }
-        }
-        return refreshTokens();
-    }
-
-    public static Optional<String> refreshTokens() {
-        String refreshKey = PreferenceManager.getInstance().getString(Constants.REFRESH_KEY);
-        if (refreshKey == null) {
-            return Optional.empty();
-        }
-        Call<AnswerBase<String>> call = RetrofitManager.getInstance().getAuthService().getRefresh(
-                RetrofitManager.getInstance().makeHeaderBearer(refreshKey)
-        );
-        try {
-            Response<AnswerBase<String>> response = call.execute();
-            if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
-                PreferenceManager.getInstance().putString(Constants.ACCESS_KEY, response.body().getResult().get("accessToken"));
-                PreferenceManager.getInstance().putString(Constants.REFRESH_KEY, response.body().getResult().get("refreshToken"));
-                return Optional.ofNullable(response.body().getResult().get("username"));
-            } else if (response.body() != null) {
-                Log.e(Constants.LOG_TAG, response.body().getError());
-                return Optional.empty();
-            }
-        } catch (IOException e) {
-            Log.e(Constants.LOG_TAG, e.getMessage());
-        }
-        return Optional.empty();
-    }
-    * */
-
-    public static Optional<String> getAuthorizationBearer(){
-        String accessKey = PreferenceManager.getInstance().getString(Constants.ACCESS_KEY);
-        if (accessKey == null){
+        if (accessKey == null) {
             return Optional.empty();
         } else {
             return Optional.ofNullable(RetrofitManager.getInstance().makeHeaderBearer(accessKey));
         }
     }
 
-    public static boolean fetchUserKey() {
+    public static void fetchUserKey(MutableLiveData<Boolean> isSignedIn) {
         Optional<String> token = getAuthorizationBearer();
-        if (!token.isPresent()){
-            return false;
+        if (!token.isPresent()) {
+            isSignedIn.setValue(false);
+            return;
         }
         Call<AnswerBase<String>> call = RetrofitManager.getInstance().getCipherService().getKey(
                 token.get()
         );
-        try {
-            Response<AnswerBase<String>> response = call.execute();
-            if (response.code() == 401){
-                return false;
+        call.enqueue(new Callback<AnswerBase<String>>() {
+            @Override
+            public void onResponse(@NonNull Call<AnswerBase<String>> call, @NonNull Response<AnswerBase<String>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
+                    PreferenceManager.getInstance().putString(Constants.USER_KEY, response.body().getResult().get("key"));
+                    isSignedIn.setValue(true);
+                    return;
+                } else if (response.body() != null) {
+                    Log.e(Constants.LOG_TAG, response.body().getError());
+                }
+                isSignedIn.setValue(false);
             }
-            if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
-                PreferenceManager.getInstance().putString(Constants.USER_KEY, response.body().getResult().get("key"));
-                return true;
-            } else if (response.body() != null) {
-                Log.e(Constants.LOG_TAG, response.body().getError());
-                return false;
+
+            @Override
+            public void onFailure(@NonNull Call<AnswerBase<String>> call, @NonNull Throwable t) {
+                Log.e(Constants.LOG_TAG, t.getMessage());
+                isSignedIn.setValue(false);
             }
-        } catch (IOException e) {
-            Log.e(Constants.LOG_TAG, e.getMessage());
-        }
-        return false;
+        });
     }
 }

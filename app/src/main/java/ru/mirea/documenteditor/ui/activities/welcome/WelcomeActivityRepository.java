@@ -17,4 +17,8 @@ public class WelcomeActivityRepository {
     public void checkLogin(MutableLiveData<Boolean> isSignedIn) {
         Utilities.checkIfLoggedIn(isSignedIn);
     }
+
+    public void getUserKey(MutableLiveData<Boolean> isSignedIn){
+        Utilities.fetchUserKey(isSignedIn);
+    }
 }

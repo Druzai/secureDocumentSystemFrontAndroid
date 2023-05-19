@@ -20,7 +20,7 @@ public interface UserService {
     Call<AnswerBaseObj<MyUserInfo>> getMe(@Header("Authorization") String bearer);
 
     @GET("/api/user/{id}")
-    Call<AnswerBaseObj<UserIdInfo>> getUser(@Header("Authorization") String bearer, @Path("id") Long userId);
+    Call<AnswerBaseObj<UserIdInfo>> getUser(@Header("Authorization") String bearer, @Path("id") Integer userId);
 
     @POST("/api/user/changeRights")
     Call<AnswerBase<DocumentRight>> postChangeRights(@Header("Authorization") String bearer, @Body DocumentRight documentRight);

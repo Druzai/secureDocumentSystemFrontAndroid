@@ -7,15 +7,25 @@ import androidx.lifecycle.ViewModel;
 public class WelcomeActivityViewModel extends ViewModel {
 
     private MutableLiveData<Boolean> isSignedIn;
+    private MutableLiveData<Boolean> gotUserKey;
     private WelcomeActivityRepository welcomeActivityRepository;
 
-    public LiveData<Boolean> getIsSignedIn(){
+    public LiveData<Boolean> getIsSignedIn() {
         return isSignedIn;
     }
 
-    public void init(){
+    public LiveData<Boolean> getGotUserKey() {
+        return gotUserKey;
+    }
+
+    public void init() {
         isSignedIn = new MutableLiveData<>();
+        gotUserKey = new MutableLiveData<>();
         welcomeActivityRepository = WelcomeActivityRepository.getInstance();
         welcomeActivityRepository.checkLogin(isSignedIn);
+    }
+
+    public void fetchUserKey() {
+        welcomeActivityRepository.getUserKey(gotUserKey);
     }
 }
