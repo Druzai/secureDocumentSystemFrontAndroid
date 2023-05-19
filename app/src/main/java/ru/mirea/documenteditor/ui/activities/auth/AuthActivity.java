@@ -13,6 +13,7 @@ import ru.mirea.documenteditor.data.model.auth.LoginModel;
 import ru.mirea.documenteditor.data.model.auth.RegisterModel;
 import ru.mirea.documenteditor.databinding.ActivityAuthBinding;
 import ru.mirea.documenteditor.ui.activities.main.MainActivity;
+import ru.mirea.documenteditor.ui.activities.welcome.WelcomeActivity;
 import ru.mirea.documenteditor.ui.fragments.auth.LoginFragment;
 import ru.mirea.documenteditor.ui.fragments.auth.RegisterFragment;
 
@@ -45,8 +46,8 @@ public class AuthActivity extends AppCompatActivity implements RegisterFragment.
         ft.replace(R.id.fl_auth, new LoginFragment(), "LoginFragment");
         ft.commit();
 
-        binding.btMovingButton.setOnClickListener(view -> {
-            String directionOfAnimation = binding.btMovingButton.getText().toString();
+        binding.btSwitchButton.setOnClickListener(view -> {
+            String directionOfAnimation = binding.btSwitchButton.getText().toString();
             switchLoginRegistration(directionOfAnimation);
         });
     }
@@ -78,8 +79,14 @@ public class AuthActivity extends AppCompatActivity implements RegisterFragment.
 
     private void handleLogin(LoginModel loginModel) {
         if (loginModel.getIsLoginValid()) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            authActivityViewModel.getGotUserKey().observe(this, gotUserKey -> {
+                if (!gotUserKey){
+                    Toast.makeText(getApplicationContext(), "Ключ шифрования пользователя не был получен!", Toast.LENGTH_SHORT).show();
+                }
+                Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+                startActivity(intent);
+            });
+            authActivityViewModel.fetchUserKey();
         } else {
             Toast.makeText(this, "Ошибка при входе!", Toast.LENGTH_SHORT).show();
         }
@@ -87,12 +94,12 @@ public class AuthActivity extends AppCompatActivity implements RegisterFragment.
 
     private void switchLoginRegistration(String key) {
         if (key.equals("Вход")) {
-            binding.btMovingButton.setText("Регистрация");
+            binding.btSwitchButton.setText("Регистрация");
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fl_auth, new LoginFragment(), "LoginFragment");
             ft.commit();
         } else {
-            binding.btMovingButton.setText("Вход");
+            binding.btSwitchButton.setText("Вход");
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fl_auth, new RegisterFragment(), "RegisterFragment");
             ft.commit();

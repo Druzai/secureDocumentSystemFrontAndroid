@@ -11,6 +11,7 @@ public class AuthActivityViewModel extends ViewModel implements OnLoginCallback,
 
     private MutableLiveData<Boolean> isRegisterLoading;
     private MutableLiveData<Boolean> isLoginLoading;
+    private MutableLiveData<Boolean> gotUserKey;
     private MutableLiveData<LoginModel> loginModel;
     private MutableLiveData<RegisterModel> registerModel;
     private AuthActivityRepository authActivityRepository;
@@ -20,6 +21,7 @@ public class AuthActivityViewModel extends ViewModel implements OnLoginCallback,
         authActivityRepository.init();
         isRegisterLoading = new MutableLiveData<>();
         isLoginLoading = new MutableLiveData<>();
+        gotUserKey = new MutableLiveData<>();
         loginModel = new MutableLiveData<>();
         registerModel = new MutableLiveData<>();
     }
@@ -40,6 +42,10 @@ public class AuthActivityViewModel extends ViewModel implements OnLoginCallback,
         return registerModel;
     }
 
+    public LiveData<Boolean> getGotUserKey() {
+        return gotUserKey;
+    }
+
     public void registerUser(String username, String password, String passwordConfirm){
         isRegisterLoading.setValue(true);
         RegisterModel currentRegisterModel = new RegisterModel(username, password, passwordConfirm);
@@ -50,6 +56,10 @@ public class AuthActivityViewModel extends ViewModel implements OnLoginCallback,
         isLoginLoading.setValue(true);
         LoginModel currentUserLoginModel = new LoginModel(username, password);
         authActivityRepository.loginUser(currentUserLoginModel, this);
+    }
+
+    public void fetchUserKey() {
+        authActivityRepository.getUserKey(gotUserKey);
     }
 
     @Override

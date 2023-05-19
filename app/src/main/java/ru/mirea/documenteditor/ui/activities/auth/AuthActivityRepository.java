@@ -3,6 +3,7 @@ package ru.mirea.documenteditor.ui.activities.auth;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import ru.mirea.documenteditor.data.payload.AuthenticationPayload;
 import ru.mirea.documenteditor.util.Constants;
 import ru.mirea.documenteditor.util.PreferenceManager;
 import ru.mirea.documenteditor.util.RetrofitManager;
+import ru.mirea.documenteditor.util.Utilities;
 
 public class AuthActivityRepository {
 
@@ -83,5 +85,9 @@ public class AuthActivityRepository {
         preferenceManager.putString(Constants.REFRESH_KEY, result.get("refreshToken"));
         loginModel.setIsLoginValid(true);
         onLoginCallback.onLoginCallback(loginModel);
+    }
+
+    public void getUserKey(MutableLiveData<Boolean> isSignedIn){
+        Utilities.fetchUserKey(isSignedIn);
     }
 }

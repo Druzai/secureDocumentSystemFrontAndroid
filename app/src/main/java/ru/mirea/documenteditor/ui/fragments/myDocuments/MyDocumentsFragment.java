@@ -83,6 +83,7 @@ public class MyDocumentsFragment extends Fragment {
 
                     Intent myIntent = new Intent(context, DocumentIdActivity.class);
                     myIntent.putExtra("id", id);
+                    myIntent.putExtra("name", name);
                     context.startActivity(myIntent);
                 }
             });

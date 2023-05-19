@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DocumentEditor</string>
+    <string name="app_name">Document Editor</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Пользователь</string>
@@ -7,7 +7,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_gallery">Gallery</string>
     <string name="title_activity_auth">Авторизация</string>
     <string name="title_activity_user_info_id">О пользователе</string>
     <string name="prompt_email">Email</string>

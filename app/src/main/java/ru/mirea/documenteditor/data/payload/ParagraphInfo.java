@@ -11,6 +11,18 @@ public class ParagraphInfo implements Comparable<ParagraphInfo> {
         this.align = align;
     }
 
+    public ParagraphInfo(WSContent wsContent){
+        this.number = wsContent.getNumber();
+        this.content = wsContent.getData();;
+        this.align = wsContent.getAlign();
+    }
+
+    public ParagraphInfo(ParagraphInfo paragraphInfo) {
+        this.number = paragraphInfo.getNumber();
+        this.content = paragraphInfo.getContent();
+        this.align = paragraphInfo.getAlign();
+    }
+
     public Integer getNumber() {
         return number;
     }
