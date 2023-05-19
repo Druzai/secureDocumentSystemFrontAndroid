@@ -36,7 +36,7 @@ public class AuthActivityViewModel extends ViewModel implements OnLoginCallback,
         return loginModel;
     }
 
-    public LiveData<RegisterModel> getRegisterModel(){
+    public MutableLiveData<RegisterModel> getRegisterModel(){
         return registerModel;
     }
 

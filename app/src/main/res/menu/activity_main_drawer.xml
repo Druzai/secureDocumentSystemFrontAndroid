@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@android:drawable/ic_menu_info_details"
             android:title="@string/menu_my_profile" />
         <item
             android:id="@+id/nav_gallery"
@@ -14,8 +14,8 @@
             android:title="@string/menu_gallery" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="@string/menu_all_users" />
         <item
             android:id="@+id/nav_logout"
             android:icon="?attr/homeAsUpIndicator"

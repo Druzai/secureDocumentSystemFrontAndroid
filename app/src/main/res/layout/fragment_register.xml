@@ -30,27 +30,24 @@
             android:layout_width="match_parent"
             android:layout_height="48sp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:hint="Введите логин"/>
-        <!--            android:drawableLeft="@drawable/edit_text_icon_size"-->
 
         <EditText
             android:id="@+id/et_registerPassword"
             android:layout_width="match_parent"
             android:layout_height="48sp"
             android:ems="10"
-            android:inputType="numberPassword|textPassword"
+            android:inputType="textPassword"
             android:hint="Введите пароль"/>
-<!--            android:drawableLeft="@drawable/edit_text_icon_size"-->
 
         <EditText
             android:id="@+id/et_registerPasswordConfirm"
             android:layout_width="match_parent"
             android:layout_height="48sp"
             android:ems="10"
-            android:inputType="numberPassword|textPassword"
+            android:inputType="textPassword"
             android:hint="Введите пароль ещё раз"/>
-<!--            android:drawableLeft="@drawable/edit_text_icon_size"-->
 
 
         <FrameLayout

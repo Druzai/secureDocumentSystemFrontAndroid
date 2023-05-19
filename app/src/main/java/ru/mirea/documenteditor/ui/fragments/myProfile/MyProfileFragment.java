@@ -22,6 +22,8 @@ public class MyProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
         myProfileViewModel.init();
 
@@ -33,9 +35,20 @@ public class MyProfileFragment extends Fragment {
         myProfileViewModel.getUsernameText().observe(getViewLifecycleOwner(), usernameTextView::setText);
         myProfileViewModel.getRolesText().observe(getViewLifecycleOwner(), rolesTextView::setText);
 
-        myProfileViewModel.getUserInfo();
-
+        if (savedInstanceState != null) {
+            myProfileViewModel.getUsernameText().setValue(savedInstanceState.getString("usernameTextView"));
+            myProfileViewModel.getRolesText().setValue(savedInstanceState.getString("rolesTextView"));
+        } else {
+            myProfileViewModel.getUserInfo();
+        }
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("usernameTextView", usernameTextView.getText().toString());
+        outState.putString("rolesTextView", rolesTextView.getText().toString());
     }
 
     @Override

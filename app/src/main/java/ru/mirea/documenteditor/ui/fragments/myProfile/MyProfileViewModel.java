@@ -17,11 +17,11 @@ public class MyProfileViewModel extends ViewModel {
         myProfileRepository.init();
     }
 
-    public LiveData<String> getUsernameText(){
+    public MutableLiveData<String> getUsernameText(){
         return usernameText;
     }
 
-    public LiveData<String> getRolesText(){
+    public MutableLiveData<String> getRolesText(){
         return rolesText;
     }
 

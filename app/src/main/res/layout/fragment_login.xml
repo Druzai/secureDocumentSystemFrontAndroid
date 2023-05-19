@@ -29,9 +29,8 @@
             android:layout_height="48sp"
             android:ems="10"
             android:hint="Введите логин"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:layout_marginBottom="20sp"/>
-<!--            android:drawableLeft="@drawable/edit_text_icon_size"-->
 
         <EditText
             android:id="@+id/et_loginPassword"
@@ -40,7 +39,6 @@
             android:ems="10"
             android:hint="Введите пароль"
             android:inputType="textPassword"/>
-<!--            android:drawableLeft="@drawable/edit_text_icon_size"-->
 
         <FrameLayout
             android:id="@+id/fl_loginButtonHolder"

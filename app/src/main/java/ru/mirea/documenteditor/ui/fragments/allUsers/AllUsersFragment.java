@@ -1,0 +1,82 @@
+package ru.mirea.documenteditor.ui.fragments.allUsers;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import ru.mirea.documenteditor.data.adapter.UsersAdapter;
+import ru.mirea.documenteditor.data.payload.UserInfo;
+import ru.mirea.documenteditor.databinding.FragmentAllUsersBinding;
+
+public class AllUsersFragment extends Fragment {
+
+    private AllUsersViewModel allUsersViewModel;
+    private RecyclerView rvUsers;
+    private Context context;
+    private FragmentAllUsersBinding binding;
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        allUsersViewModel = new ViewModelProvider(this).get(AllUsersViewModel.class);
+
+        binding = FragmentAllUsersBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        // Lookup the recyclerview in activity layout
+        rvUsers = binding.rvUsers;
+        context = getContext();
+
+        // Initialize users
+        allUsersViewModel.getArrayUserInfo().observe(getViewLifecycleOwner(), this::setUpRecycleView);
+
+        if (savedInstanceState != null) {
+            allUsersViewModel.getArrayUserInfo().setValue(
+                    savedInstanceState.getParcelableArrayList("arrayUserInfo")
+            );
+        } else {
+            allUsersViewModel.queryUsers();
+        }
+        return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("arrayUserInfo", allUsersViewModel.getArrayUserInfo().getValue());
+    }
+
+    private void setUpRecycleView(ArrayList<UserInfo> arrayUserInfo){
+        UsersAdapter adapter = new UsersAdapter(arrayUserInfo);
+        adapter.setOnItemClickListener(new UsersAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Integer id = arrayUserInfo.get(position).getId();
+                Toast.makeText(context, id + " was clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        rvUsers.setAdapter(adapter);
+        rvUsers.setLayoutManager(new LinearLayoutManager(context));
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+        rvUsers.addItemDecoration(itemDecoration);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+}

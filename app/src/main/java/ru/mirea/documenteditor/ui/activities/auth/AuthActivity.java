@@ -23,6 +23,8 @@ public class AuthActivity extends AppCompatActivity implements RegisterFragment.
     private ActivityAuthBinding binding;
     private AuthActivityViewModel authActivityViewModel;
 
+    private boolean passwordDontMatch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,8 @@ public class AuthActivity extends AppCompatActivity implements RegisterFragment.
 
         authActivityViewModel = new ViewModelProvider(this).get(AuthActivityViewModel.class);
         authActivityViewModel.init();
+
+        passwordDontMatch = false;
 
         setBinding();
         setObservers();
@@ -63,10 +67,12 @@ public class AuthActivity extends AppCompatActivity implements RegisterFragment.
     }
 
     private void handleRegister(RegisterModel registerModel) {
-        if (registerModel.getIsRegisterValid()) {
+        if (registerModel.getIsRegisterValid() && !passwordDontMatch) {
             switchLoginRegistration("Вход");
+        } else if (passwordDontMatch) {
+            Toast.makeText(this, "Пароли не совпадают!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Unable to register", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ошибка при регистрации!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -75,46 +81,22 @@ public class AuthActivity extends AppCompatActivity implements RegisterFragment.
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Unable to login", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ошибка при входе!", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void switchLoginRegistration(String key) {
-
-//        ObjectAnimator animator;
-
         if (key.equals("Вход")) {
-//            animator = ObjectAnimator.ofFloat(binding.llMovingBar, "translationY", 0f);
             binding.btMovingButton.setText("Регистрация");
-//            binding.tvAlreadyHaveAccount.setText("Ещё нет аккаунта в\nприложении");
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fl_auth, new LoginFragment(), "LoginFragment");
             ft.commit();
-            /*
-            new Handler().postDelayed(() -> {
-                ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.register_login_frame_layout, new LoginFragment());
-                ft.commit();
-            }, 1000);
-             */
-
         } else {
-//            animator = ObjectAnimator.ofFloat(binding.llMovingBar, "translationY", 1375f);
             binding.btMovingButton.setText("Вход");
-//            binding.tvAlreadyHaveAccount.setText("Уже есть аккаунт в\nприложении?");
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fl_auth, new RegisterFragment(), "RegisterFragment");
             ft.commit();
-            /*
-            new Handler().postDelayed(() -> {
-                ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.register_login_frame_layout, new RegisterFragment());
-                ft.commit();
-            }, 1000);
-             */
         }
-//        animator.setDuration(1000);
-//        animator.start();
     }
 
     private void loadingRegistration(boolean isLoading) {
@@ -137,7 +119,13 @@ public class AuthActivity extends AppCompatActivity implements RegisterFragment.
 
     @Override
     public void onRegisterDataPass(String username, String password, String passwordConfirm) {
-        registerNewUser(username, password, passwordConfirm);
+        if (!password.equals(passwordConfirm)){
+            passwordDontMatch = true;
+            authActivityViewModel.getRegisterModel().setValue(new RegisterModel(username, password, ""));
+        } else {
+            passwordDontMatch = false;
+            registerNewUser(username, password, passwordConfirm);
+        }
     }
 
     @Override

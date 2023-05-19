@@ -12,6 +12,7 @@ import ru.mirea.documenteditor.data.payload.AnswerBase;
 import ru.mirea.documenteditor.data.payload.AnswerBaseObj;
 import ru.mirea.documenteditor.data.payload.DocumentRight;
 import ru.mirea.documenteditor.data.payload.MyUserInfo;
+import ru.mirea.documenteditor.data.payload.UserIdInfo;
 import ru.mirea.documenteditor.data.payload.UserInfo;
 
 public interface UserService {
@@ -19,7 +20,7 @@ public interface UserService {
     Call<AnswerBaseObj<MyUserInfo>> getMe(@Header("Authorization") String bearer);
 
     @GET("/api/user/{id}")
-    Call<AnswerBase<Object>> getUser(@Header("Authorization") String bearer, @Path("id") Long userId);
+    Call<AnswerBaseObj<UserIdInfo>> getUser(@Header("Authorization") String bearer, @Path("id") Long userId);
 
     @POST("/api/user/changeRights")
     Call<AnswerBase<Object>> postChangeRights(@Header("Authorization") String bearer, @Body DocumentRight documentRight);
