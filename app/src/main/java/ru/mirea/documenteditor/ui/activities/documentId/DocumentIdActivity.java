@@ -2,12 +2,10 @@ package ru.mirea.documenteditor.ui.activities.documentId;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,14 +20,11 @@ import com.google.gson.GsonBuilder;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import io.reactivex.Completable;
 import io.reactivex.CompletableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -47,7 +42,6 @@ import ru.mirea.documenteditor.util.PreferenceManager;
 import ru.mirea.documenteditor.util.aes.Cipher;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
-import ua.naiksoftware.stomp.dto.StompHeader;
 import ua.naiksoftware.stomp.dto.StompMessage;
 
 public class DocumentIdActivity extends AppCompatActivity {
@@ -86,19 +80,36 @@ public class DocumentIdActivity extends AppCompatActivity {
         paragraphsEditText = binding.edittextDocument;
         lastEditTextView = binding.textviewLastEditBy;
 
-        MutableLiveData<Boolean> isFetchedKey = new MutableLiveData<>();
-        isFetchedKey.observe(this, done -> {
-            if (!done) {
-                Toast.makeText(getApplicationContext(), "Ошибка при получении ключа шифрования документа!", Toast.LENGTH_SHORT).show();
-                finish();
+        MutableLiveData<Boolean> isFetchedDocumentIdEditor = new MutableLiveData<>();
+        boolean setParagraphListInMemory = false;
+
+        if (savedInstanceState != null && savedInstanceState.getString("documentKey") != null) {
+            cipher = CipherManager.getInstance().getCipher(savedInstanceState.getString("documentKey"));
+            DocumentIdEditor documentIdEditor = savedInstanceState.getParcelable("documentIdEditor");
+            if (documentIdEditor != null) {
+                documentIdActivityViewModel.getDocumentIdEditor().setValue(documentIdEditor);
             } else {
-                cipher = CipherManager.getInstance().getCipher(PreferenceManager.getInstance().getString(Constants.DOCUMENT_WS_KEY));
                 documentIdActivityViewModel.getDocument(documentId);
             }
-        });
-        documentIdActivityViewModel.fetchDocumentKey(isFetchedKey, documentId);
+            List<ParagraphInfo> paragraphInfoList = savedInstanceState.getParcelableArrayList("documentParagraphsInMemory");
+            if (paragraphInfoList != null){
+                documentIdActivityViewModel.setDocumentParagraphListInMemory(paragraphInfoList);
+                setParagraphListInMemory = true;
+            }
+        } else {
+            MutableLiveData<Boolean> isFetchedKey = new MutableLiveData<>();
+            isFetchedKey.observe(this, done -> {
+                if (!done) {
+                    Toast.makeText(getApplicationContext(), "Ошибка при получении ключа шифрования документа!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    cipher = CipherManager.getInstance().getCipher(PreferenceManager.getInstance().getString(Constants.DOCUMENT_WS_KEY));
+                    documentIdActivityViewModel.getDocument(documentId);
+                }
+            });
+            documentIdActivityViewModel.fetchDocumentKey(isFetchedKey, documentId);
+        }
 
-        MutableLiveData<Boolean> isFetchedDocumentIdEditor = new MutableLiveData<>();
         documentIdActivityViewModel.getDocumentIdEditor().observe(this, documentIdEditor -> {
             if (documentIdEditor.isEditor() || documentIdEditor.isOwner()) {
                 paragraphsEditText.setEnabled(true);
@@ -118,14 +129,28 @@ public class DocumentIdActivity extends AppCompatActivity {
             isFetchedDocumentIdEditor.setValue(true);
         });
 
+        final boolean finalSetParagraphListInMemory = setParagraphListInMemory;
         isFetchedDocumentIdEditor.observe(this, done -> {
-            documentIdActivityViewModel.setDocumentParagraphListInMemory(
-                    Objects.requireNonNull(documentIdActivityViewModel.getDocumentIdEditor().getValue()).getDocumentParagraphs()
-            );
+            if (!finalSetParagraphListInMemory) {
+                documentIdActivityViewModel.setDocumentParagraphListInMemory(
+                        Objects.requireNonNull(documentIdActivityViewModel.getDocumentIdEditor().getValue()).getDocumentParagraphs()
+                );
+            }
             stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Constants.WEB_SOCKET_URL);
             resetSubscriptions();
             connectStomp();
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        DocumentIdEditor documentIdEditor = documentIdActivityViewModel.getDocumentIdEditor().getValue();
+        if (documentIdEditor != null) {
+            outState.putString("documentKey", cipher.getKeyBase64());
+            outState.putParcelable("documentIdEditor", documentIdEditor);
+            outState.putParcelableArrayList("documentParagraphsInMemory", (ArrayList<? extends Parcelable>) documentIdActivityViewModel.getLdDocumentParagraphListInMemory().getValue());
+        }
     }
 
     @Override

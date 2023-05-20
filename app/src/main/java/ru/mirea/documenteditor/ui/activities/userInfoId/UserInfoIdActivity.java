@@ -121,13 +121,13 @@ public class UserInfoIdActivity extends AppCompatActivity {
             } else {
                 llRoles.setVisibility(View.GONE);
             }
-            if (userIdInfo.getDocuments() == null && userIdInfo.getAllRoles() == null){
+            if (userIdInfo.getDocuments() == null && userIdInfo.getAllRoles() == null) {
                 btnChangeRights.setVisibility(View.GONE);
             } else {
                 btnChangeRights.setVisibility(View.VISIBLE);
             }
         });
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             UserIdInfo userIdInfo = new UserIdInfo(
                     savedInstanceState.getString("username"),
                     savedInstanceState.getBoolean("me"),

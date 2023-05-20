@@ -1,8 +1,13 @@
 package ru.mirea.documenteditor.data.payload;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
-public class DocumentIdEditor {
+public class DocumentIdEditor implements Parcelable {
     private boolean editor;
     private boolean owner;
     private DocumentInfo document;
@@ -14,6 +19,25 @@ public class DocumentIdEditor {
         this.document = document;
         this.documentParagraphs = documentParagraphs;
     }
+
+    protected DocumentIdEditor(Parcel in) {
+        editor = in.readByte() != 0;
+        owner = in.readByte() != 0;
+        document = in.readParcelable(DocumentInfo.class.getClassLoader());
+        documentParagraphs = in.createTypedArrayList(ParagraphInfo.CREATOR);
+    }
+
+    public static final Creator<DocumentIdEditor> CREATOR = new Creator<DocumentIdEditor>() {
+        @Override
+        public DocumentIdEditor createFromParcel(Parcel in) {
+            return new DocumentIdEditor(in);
+        }
+
+        @Override
+        public DocumentIdEditor[] newArray(int size) {
+            return new DocumentIdEditor[size];
+        }
+    };
 
     public boolean isEditor() {
         return editor;
@@ -45,5 +69,18 @@ public class DocumentIdEditor {
 
     public void setDocumentParagraphs(List<ParagraphInfo> documentParagraphs) {
         this.documentParagraphs = documentParagraphs;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeByte((byte) (editor ? 1 : 0));
+        dest.writeByte((byte) (owner ? 1 : 0));
+        dest.writeParcelable(document, flags);
+        dest.writeTypedList(documentParagraphs);
     }
 }

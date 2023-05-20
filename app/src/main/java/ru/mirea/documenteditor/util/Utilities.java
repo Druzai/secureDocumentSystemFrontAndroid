@@ -114,6 +114,7 @@ public class Utilities {
                     if (decodedMessage.equals(Constants.TEST_MESSAGE)) {
                         isValid.setValue(true);
                     } else {
+                        CipherManager.getInstance().deleteCipher(userKey);
                         fetchUserKey(isValid);
                     }
                     return;
