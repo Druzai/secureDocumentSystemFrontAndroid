@@ -342,7 +342,10 @@ public class DocumentIdActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        stompClient.disconnect();
+        if (stompClient != null) {
+            compareAndSaveChanges();
+            stompClient.disconnect();
+        }
 
         if (compositeDisposable != null)
             compositeDisposable.dispose();
