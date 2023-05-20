@@ -32,6 +32,7 @@ public class UserInfoIdActivity extends AppCompatActivity {
     private UserInfoIdActivityViewModel userInfoIdActivityViewModel;
 
     private TextView welcomeTextView;
+    private TextView settingTextView;
     private Spinner documentsSpinner;
     private Spinner rolesSpinner;
 
@@ -55,6 +56,7 @@ public class UserInfoIdActivity extends AppCompatActivity {
         userId = intent.getIntExtra("id", -1);
 
         welcomeTextView = binding.textWelcomeChangeRights;
+        settingTextView = binding.textChangeSection;
         documentsSpinner = binding.spinnerDocumentRight;
         rolesSpinner = binding.spinnerRoleRight;
         llDocuments = binding.linearLayoutDocumentsRight;
@@ -123,8 +125,10 @@ public class UserInfoIdActivity extends AppCompatActivity {
             }
             if (userIdInfo.getDocuments() == null && userIdInfo.getAllRoles() == null) {
                 btnChangeRights.setVisibility(View.GONE);
+                settingTextView.setVisibility(View.GONE);
             } else {
                 btnChangeRights.setVisibility(View.VISIBLE);
+                settingTextView.setVisibility(View.VISIBLE);
             }
         });
         if (savedInstanceState != null) {
