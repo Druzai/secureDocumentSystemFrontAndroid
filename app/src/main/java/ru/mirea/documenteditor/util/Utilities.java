@@ -13,7 +13,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.mirea.documenteditor.data.payload.AnswerBase;
 import ru.mirea.documenteditor.data.payload.AnswerBaseObj;
+import ru.mirea.documenteditor.data.payload.InputMessage;
 import ru.mirea.documenteditor.data.payload.MyUserInfo;
+import ru.mirea.documenteditor.util.aes.Cipher;
 
 public class Utilities {
     public static void checkIfLoggedIn(MutableLiveData<Boolean> isSignedIn) {
@@ -28,7 +30,9 @@ public class Utilities {
                     if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
                         PreferenceManager.getInstance().putString(Constants.USER_NAME, response.body().getResult().getUsername());
                         isSignedIn.setValue(true);
+                        return;
                     }
+                    isSignedIn.setValue(false);
                 }
 
                 @Override
@@ -58,10 +62,11 @@ public class Utilities {
                     PreferenceManager.getInstance().putString(Constants.ACCESS_KEY, response.body().getResult().get("accessToken"));
                     PreferenceManager.getInstance().putString(Constants.REFRESH_KEY, response.body().getResult().get("refreshToken"));
                     isSignedIn.setValue(true);
+                    return;
                 } else if (response.body() != null) {
                     Log.e(Constants.LOG_TAG, response.body().getError());
-                    isSignedIn.setValue(false);
                 }
+                isSignedIn.setValue(false);
             }
 
             @Override
@@ -81,10 +86,55 @@ public class Utilities {
         }
     }
 
-    public static void fetchUserKey(MutableLiveData<Boolean> isSignedIn) {
+    public static void checkIfUserKeyValid(MutableLiveData<Boolean> isValid) {
         Optional<String> token = getAuthorizationBearer();
         if (!token.isPresent()) {
-            isSignedIn.setValue(false);
+            isValid.setValue(false);
+            return;
+        }
+        String userKey = PreferenceManager.getInstance().getString(Constants.USER_KEY);
+        if (userKey == null) {
+            fetchUserKey(isValid);
+            return;
+        }
+        if (!CipherManager.getInstance().isKeyValid(userKey)){
+            CipherManager.getInstance().deleteCipher(userKey);
+            fetchUserKey(isValid);
+            return;
+        }
+        Call<AnswerBaseObj<InputMessage>> call = RetrofitManager.getInstance().getCipherService().processText(
+                token.get(), new InputMessage(Constants.TEST_MESSAGE, true)
+        );
+        call.enqueue(new Callback<AnswerBaseObj<InputMessage>>() {
+            @Override
+            public void onResponse(@NonNull Call<AnswerBaseObj<InputMessage>> call, @NonNull Response<AnswerBaseObj<InputMessage>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
+                    Cipher cipher = CipherManager.getInstance().getCipher(userKey);
+                    String decodedMessage = cipher.decrypt(response.body().getResult().getText());
+                    if (decodedMessage.equals(Constants.TEST_MESSAGE)) {
+                        isValid.setValue(true);
+                    } else {
+                        fetchUserKey(isValid);
+                    }
+                    return;
+                } else if (response.body() != null) {
+                    Log.e(Constants.LOG_TAG, response.body().getError());
+                }
+                isValid.setValue(false);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AnswerBaseObj<InputMessage>> call, @NonNull Throwable t) {
+                Log.e(Constants.LOG_TAG, t.getMessage());
+                isValid.setValue(false);
+            }
+        });
+    }
+
+    public static void fetchUserKey(MutableLiveData<Boolean> isValid) {
+        Optional<String> token = getAuthorizationBearer();
+        if (!token.isPresent()) {
+            isValid.setValue(false);
             return;
         }
         Call<AnswerBase<String>> call = RetrofitManager.getInstance().getCipherService().getKey(
@@ -95,18 +145,18 @@ public class Utilities {
             public void onResponse(@NonNull Call<AnswerBase<String>> call, @NonNull Response<AnswerBase<String>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
                     PreferenceManager.getInstance().putString(Constants.USER_KEY, response.body().getResult().get("key"));
-                    isSignedIn.setValue(true);
+                    isValid.setValue(true);
                     return;
                 } else if (response.body() != null) {
                     Log.e(Constants.LOG_TAG, response.body().getError());
                 }
-                isSignedIn.setValue(false);
+                isValid.setValue(false);
             }
 
             @Override
             public void onFailure(@NonNull Call<AnswerBase<String>> call, @NonNull Throwable t) {
                 Log.e(Constants.LOG_TAG, t.getMessage());
-                isSignedIn.setValue(false);
+                isValid.setValue(false);
             }
         });
     }

@@ -31,12 +31,12 @@ public class WelcomeActivity extends AppCompatActivity {
         welcomeActivityViewModel.getIsSignedIn().observe(this, isSignedIn -> {
             if (isSignedIn) {
                 welcomeActivityViewModel.getGotUserKey().observe(WelcomeActivity.this, gotUserKey -> {
-                    if (!gotUserKey){
+                    if (!gotUserKey) {
                         Toast.makeText(getApplicationContext(), "Ключ шифрования пользователя не был получен!", Toast.LENGTH_SHORT).show();
                     }
                     startMainActivity();
                 });
-                welcomeActivityViewModel.fetchUserKey();
+                welcomeActivityViewModel.checkUserKey();
             } else {
                 startAuthActivity();
             }

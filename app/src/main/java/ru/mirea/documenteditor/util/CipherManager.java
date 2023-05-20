@@ -40,4 +40,13 @@ public class CipherManager {
             return false;
         }
     }
+
+    public boolean isKeyValid(String key){
+        try {
+            new Cipher(key);
+            return true;
+        } catch (RuntimeException e){
+            return false;
+        }
+    }
 }

@@ -25,7 +25,7 @@ public class WelcomeActivityViewModel extends ViewModel {
         welcomeActivityRepository.checkLogin(isSignedIn);
     }
 
-    public void fetchUserKey() {
-        welcomeActivityRepository.getUserKey(gotUserKey);
+    public void checkUserKey() {
+        welcomeActivityRepository.checkUserKey(gotUserKey);
     }
 }

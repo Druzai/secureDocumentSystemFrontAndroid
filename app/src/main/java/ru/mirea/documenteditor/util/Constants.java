@@ -18,4 +18,6 @@ public class Constants {
     public static final String USER_KEY = "userKey";
     public static final String DOCUMENT_WS_KEY = "documentWsKey";
     public static final String USER_NAME = "userName";
+
+    public static final String TEST_MESSAGE = "Тестовое сообщение";
 }
