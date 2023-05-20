@@ -65,7 +65,7 @@ public class NewDocumentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String newName = nameEditText.getText().toString();
                 if (newName.trim().length() == 0){
-                    Toast.makeText(getApplicationContext(), "Имя документа не может быть пустым или состоять из пробельных символов!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Имя документа не может быть пустым!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

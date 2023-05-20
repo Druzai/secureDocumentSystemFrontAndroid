@@ -8,11 +8,6 @@ import static org.junit.Assert.*;
 import ru.mirea.documenteditor.util.aes.Cipher;
 import ru.mirea.documenteditor.util.aes.Type;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 public class CipherTest {
     private Cipher cipher;
 
@@ -37,6 +32,18 @@ public class CipherTest {
 
         String encodedString = cipher.encrypt(msg);
         String decodedString = cipher.decrypt(encodedString);
+
+        assertEquals(msg, decodedString);
+    }
+
+    @Test
+    public void TextShouldBeEncryptedRussian() {
+        String msg = "Тестирование шифратора cipher 123456789";
+        String key = "NQNMBD12QmU9NxRhCAAEawdrBwYzcTp5R3tJZgV+Yn8=";
+        Cipher cipherStatic = new Cipher(key);
+
+        String encodedString = "RRf+fuxaopTJJ0obPVXgCqgq88eNdKcOmKAjUPtJ37vrzYsvYLv6nhgH1Zgl82XUvgSf5kSC/y/SJokk8lX7GDSgPpHWW+cT2jN6ZpLDxUU=";
+        String decodedString = cipherStatic.decrypt(encodedString);
 
         assertEquals(msg, decodedString);
     }
