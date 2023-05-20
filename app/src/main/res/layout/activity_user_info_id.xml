@@ -22,6 +22,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Добро пожаловать!"
+            android:textSize="17sp"
+            android:layout_marginBottom="30sp" />
+
+        <TextView
+            android:id="@+id/text_change_section"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:text="Добавить/изменить роль у данного пользователя для выбранного документа:"
             android:textSize="17sp" />
 
         <LinearLayout
@@ -73,9 +83,8 @@
             android:layout_gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="Добавить/изменить роль у данного пользователя для документа"
+            android:text="Применить"
             android:textSize="12sp" />
-
 
         <Button
             android:id="@+id/bt_back"

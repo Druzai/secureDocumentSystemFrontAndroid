@@ -8,10 +8,12 @@ import androidx.annotation.NonNull;
 public class RoleInfo implements Parcelable {
     private Long id;
     private String name;
+    private String userName;
 
-    public RoleInfo(Long id, String name){
+    public RoleInfo(Long id, String name, String userName) {
         this.id = id;
         this.name = name;
+        this.userName = userName;
     }
 
     protected RoleInfo(Parcel in) {
@@ -21,6 +23,7 @@ public class RoleInfo implements Parcelable {
             id = in.readLong();
         }
         name = in.readString();
+        userName = in.readString();
     }
 
     public static final Creator<RoleInfo> CREATOR = new Creator<RoleInfo>() {
@@ -51,6 +54,14 @@ public class RoleInfo implements Parcelable {
         this.name = name;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -65,5 +76,6 @@ public class RoleInfo implements Parcelable {
             dest.writeLong(id);
         }
         dest.writeString(name);
+        dest.writeString(userName);
     }
 }

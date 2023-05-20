@@ -113,7 +113,7 @@ public class UserInfoIdActivity extends AppCompatActivity {
             if (userIdInfo.getAllRoles() != null) {
                 // Role spinner
                 ArrayList<StringWithTag> roleArray = userIdInfo.getAllRoles().stream()
-                        .map(r -> new StringWithTag(r.getName(), r.getId()))
+                        .map(r -> new StringWithTag(r.getUserName(), r.getId()))
                         .collect(Collectors.toCollection(ArrayList::new));
                 ArrayAdapter<StringWithTag> roleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, roleArray);
                 rolesSpinner.setAdapter(roleAdapter);

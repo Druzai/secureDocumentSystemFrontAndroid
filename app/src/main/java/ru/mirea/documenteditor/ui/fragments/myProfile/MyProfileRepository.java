@@ -48,7 +48,7 @@ public class MyProfileRepository {
                 if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
                     username.setValue((String) response.body().getResult().getUsername());
                     roles.setValue(response.body().getResult().getMyRoles().stream()
-                            .map(RoleInfo::getName)
+                            .map(RoleInfo::getUserName)
                             .collect(Collectors.joining(", "))
                     );
                 }
