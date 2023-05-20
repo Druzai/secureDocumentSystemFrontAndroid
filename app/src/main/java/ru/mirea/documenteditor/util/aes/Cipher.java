@@ -90,7 +90,6 @@ public class Cipher {
 
     public String getKeyBase64() {
         return new String(Base64.getEncoder().encode(key), StandardCharsets.UTF_8);
-//        return Base64.getEncoder().encodeToString(key);
     }
 
     public byte[] getKey() {
@@ -141,7 +140,6 @@ public class Cipher {
             }
         }
         return new String(result.toByteArray(), StandardCharsets.UTF_16LE).trim();
-//        return result.toString(StandardCharsets.UTF_16LE).trim();
     }
 
     private byte[] decryptBlock(byte[] text) {
