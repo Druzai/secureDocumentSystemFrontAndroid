@@ -35,7 +35,9 @@ public class MyProfileFragment extends Fragment {
         myProfileViewModel.getUsernameText().observe(getViewLifecycleOwner(), usernameTextView::setText);
         myProfileViewModel.getRolesText().observe(getViewLifecycleOwner(), rolesTextView::setText);
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null &&
+                savedInstanceState.getString("usernameTextView") != null &&
+                savedInstanceState.getString("rolesTextView") != null) {
             myProfileViewModel.getUsernameText().setValue(savedInstanceState.getString("usernameTextView"));
             myProfileViewModel.getRolesText().setValue(savedInstanceState.getString("rolesTextView"));
         } else {
@@ -47,8 +49,10 @@ public class MyProfileFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("usernameTextView", myProfileViewModel.getUsernameText().getValue());
-        outState.putString("rolesTextView", myProfileViewModel.getRolesText().getValue());
+        if (myProfileViewModel != null) {
+            outState.putString("usernameTextView", myProfileViewModel.getUsernameText().getValue());
+            outState.putString("rolesTextView", myProfileViewModel.getRolesText().getValue());
+        }
     }
 
     @Override
