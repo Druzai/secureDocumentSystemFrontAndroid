@@ -56,8 +56,9 @@ public class DocumentIdActivityRepository {
                 if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
                     Cipher cipher = cipherManager.getCipher(preferenceManager.getString(Constants.USER_KEY));
                     DocumentIdEditor documentIdEditorResponse = response.body().getResult();
+                    String lastEdit = cipher.decrypt(documentIdEditorResponse.getDocument().getLastEditBy());
                     documentIdEditorResponse.getDocument().setLastEditBy(
-                            cipher.decrypt(documentIdEditorResponse.getDocument().getLastEditBy())
+                            Objects.equals(lastEdit, "") ? null : lastEdit
                     );
                     documentIdEditorResponse.setDocumentParagraphs(
                             documentIdEditorResponse.getDocumentParagraphs().stream()
