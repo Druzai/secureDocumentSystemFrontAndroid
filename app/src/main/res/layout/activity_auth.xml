@@ -6,13 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.auth.AuthActivity">
 
+    <FrameLayout
+        android:id="@+id/fl_auth"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_setToolbar"
+        >
+
+    </FrameLayout>
+
     <LinearLayout
-        android:id="@+id/ll_movingBar"
+        android:id="@+id/ll_setToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:layout_marginTop="13sp"
         android:background="?attr/colorPrimary">
 
         <Button
@@ -23,12 +31,5 @@
             android:text="Регистрация"
             android:layout_marginBottom="8sp"/>
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/fl_auth"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </FrameLayout>
 
 </RelativeLayout>
