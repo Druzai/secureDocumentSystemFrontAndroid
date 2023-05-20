@@ -41,7 +41,7 @@
                 android:id="@+id/spinner_document_right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
+                android:background="@drawable/spinner_bg"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
@@ -62,7 +62,7 @@
                 android:id="@+id/spinner_role_right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
+                android:background="@drawable/spinner_bg"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
