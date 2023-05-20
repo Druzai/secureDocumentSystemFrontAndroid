@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,6 +15,7 @@ import retrofit2.Response;
 import ru.mirea.documenteditor.data.payload.AnswerBase;
 import ru.mirea.documenteditor.data.payload.AnswerBaseObj;
 import ru.mirea.documenteditor.data.payload.DocumentIdEditor;
+import ru.mirea.documenteditor.data.payload.ParagraphInfo;
 import ru.mirea.documenteditor.data.payload.UserIdInfo;
 import ru.mirea.documenteditor.util.CipherManager;
 import ru.mirea.documenteditor.util.Constants;
@@ -53,8 +55,21 @@ public class DocumentIdActivityRepository {
             @Override
             public void onResponse(@NonNull Call<AnswerBaseObj<DocumentIdEditor>> call, @NonNull Response<AnswerBaseObj<DocumentIdEditor>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getResult() != null) {
-                    // TODO: Decrypt!!!
-                    documentIdEditor.setValue(response.body().getResult());
+                    Cipher cipher = cipherManager.getCipher(preferenceManager.getString(Constants.USER_KEY));
+                    DocumentIdEditor documentIdEditorResponse = response.body().getResult();
+                    documentIdEditorResponse.getDocument().setLastEditBy(
+                            cipher.decrypt(documentIdEditorResponse.getDocument().getLastEditBy())
+                    );
+                    documentIdEditorResponse.setDocumentParagraphs(
+                            documentIdEditorResponse.getDocumentParagraphs().stream()
+                                    .map(p -> new ParagraphInfo(
+                                            p.getNumber(),
+                                            cipher.decrypt(p.getContent()),
+                                            cipher.decrypt(p.getAlign())
+                                    ))
+                                    .collect(Collectors.toList())
+                    );
+                    documentIdEditor.setValue(documentIdEditorResponse);
                 }
             }
 

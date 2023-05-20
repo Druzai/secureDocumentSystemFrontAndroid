@@ -100,10 +100,10 @@ public class DocumentIdActivity extends AppCompatActivity {
 
         MutableLiveData<Boolean> isFetchedDocumentIdEditor = new MutableLiveData<>();
         documentIdActivityViewModel.getDocumentIdEditor().observe(this, documentIdEditor -> {
-            if (documentIdEditor.isEditor() || documentIdEditor.isOwner()){
+            if (documentIdEditor.isEditor() || documentIdEditor.isOwner()) {
                 paragraphsEditText.setEnabled(true);
                 paragraphsEditText.setFocusable(true);
-            } else{
+            } else {
                 paragraphsEditText.setEnabled(false);
                 paragraphsEditText.setFocusable(false);
             }
@@ -126,22 +126,6 @@ public class DocumentIdActivity extends AppCompatActivity {
             resetSubscriptions();
             connectStomp();
         });
-
-//        paragraphsEditText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                ArrayList<ParagraphInfo> arrayList = new
-//                documentIdActivityViewModel.getLdDocumentParagraphListInMemory().setValue();
-//            }
-//        });
     }
 
     @Override
@@ -210,38 +194,54 @@ public class DocumentIdActivity extends AppCompatActivity {
 
     public void listenOnStompTopic(StompMessage stompMessage) {
         WSMessage wsMessage = mGson.fromJson(stompMessage.getPayload(), WSMessage.class);
-        Log.d(Constants.LOG_TAG, wsMessage.getCommand());
-        // TODO: Decrypt!!!
 
-        if (Objects.equals(wsMessage.getDocumentId(), documentId) && !wsMessage.getFromUser().equals(username)) {
-            DocumentIdEditor documentIdEditor = documentIdActivityViewModel.getDocumentIdEditor().getValue();
-            assert documentIdEditor != null;
-            List<ParagraphInfo> paragraphInfoList = documentIdEditor.getDocumentParagraphs();
-
-            switch (wsMessage.getCommand()) {
-                case "create":
-                    paragraphInfoList.addAll(
-                            wsMessage.getContent().stream()
-                                    .map(ParagraphInfo::new)
-                                    .collect(Collectors.toList())
-                    );
-                    break;
-                case "delete":
-                    for (WSContent wsContent : wsMessage.getContent()) {
-                        paragraphInfoList.remove((int) wsContent.getNumber());
-                    }
-                    break;
-                case "edit":
-                    for (WSContent wsContent : wsMessage.getContent()) {
-                        paragraphInfoList.set((int) wsContent.getNumber(), new ParagraphInfo(wsContent));
-                    }
-                    break;
-            }
-            documentIdEditor.getDocument().setLastEditBy(wsMessage.getFromUser());
-            documentIdActivityViewModel.setDocumentParagraphListInMemory(paragraphInfoList);
-            documentIdEditor.setDocumentParagraphs(paragraphInfoList);
-            documentIdActivityViewModel.getDocumentIdEditor().setValue(documentIdEditor);
+        String decodedFromUser = cipher.decrypt(wsMessage.getFromUser());
+        if (!Objects.equals(wsMessage.getDocumentId(), documentId) || decodedFromUser.equals(username)) {
+            return;
         }
+
+        // Decrypt message
+        WSMessage decodedMessage = new WSMessage(
+                wsMessage.getDocumentId(),
+                decodedFromUser,
+                cipher.decrypt(wsMessage.getCommand()),
+                (ArrayList<WSContent>)
+                        wsMessage.getContent().stream()
+                                .map(c -> new WSContent(
+                                        c.getNumber(),
+                                        cipher.decrypt(c.getData()),
+                                        cipher.decrypt(c.getAlign())
+                                ))
+                                .collect(Collectors.toList())
+        );
+
+        DocumentIdEditor documentIdEditor = documentIdActivityViewModel.getDocumentIdEditor().getValue();
+        assert documentIdEditor != null;
+        List<ParagraphInfo> paragraphInfoList = documentIdEditor.getDocumentParagraphs();
+
+        switch (decodedMessage.getCommand()) {
+            case "create":
+                paragraphInfoList.addAll(
+                        decodedMessage.getContent().stream()
+                                .map(ParagraphInfo::new)
+                                .collect(Collectors.toList())
+                );
+                break;
+            case "delete":
+                for (WSContent wsContent : decodedMessage.getContent()) {
+                    paragraphInfoList.remove((int) wsContent.getNumber());
+                }
+                break;
+            case "edit":
+                for (WSContent wsContent : decodedMessage.getContent()) {
+                    paragraphInfoList.set((int) wsContent.getNumber(), new ParagraphInfo(wsContent));
+                }
+                break;
+        }
+        documentIdEditor.getDocument().setLastEditBy(decodedMessage.getFromUser());
+        documentIdActivityViewModel.setDocumentParagraphListInMemory(paragraphInfoList);
+        documentIdEditor.setDocumentParagraphs(paragraphInfoList);
+        documentIdActivityViewModel.getDocumentIdEditor().setValue(documentIdEditor);
     }
 
     public void compareAndSaveChanges() {
@@ -260,7 +260,7 @@ public class DocumentIdActivity extends AppCompatActivity {
 
         MutableLiveData<Boolean> isSent = new MutableLiveData<>();
         isSent.observe(this, sent -> {
-            if (!sent){
+            if (!sent) {
                 Toast.makeText(getApplicationContext(), "Ошибка при отправке изменений!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -298,13 +298,25 @@ public class DocumentIdActivity extends AppCompatActivity {
         if (!stompClient.isConnected())
             return false;
 
-        if (wsMessage.getContent().size() == 0){
+        if (wsMessage.getContent().size() == 0) {
             return true;
         }
+        // Encrypt message
+        WSMessage encodedMessage = new WSMessage(
+                wsMessage.getDocumentId(),
+                cipher.encrypt(wsMessage.getFromUser()),
+                cipher.encrypt(wsMessage.getCommand()),
+                (ArrayList<WSContent>)
+                        wsMessage.getContent().stream()
+                                .map(c -> new WSContent(
+                                        c.getNumber(),
+                                        cipher.encrypt(c.getData()),
+                                        cipher.encrypt(c.getAlign())
+                                ))
+                                .collect(Collectors.toList())
+        );
 
-        // TODO: Encrypt!!!
-
-        compositeDisposable.add(stompClient.send(Constants.WEB_SOCKET_MESSAGE_SEND, mGson.toJson(wsMessage))
+        compositeDisposable.add(stompClient.send(Constants.WEB_SOCKET_MESSAGE_SEND, mGson.toJson(encodedMessage))
                 .compose(applySchedulers())
                 .subscribe(() -> {
                     Log.d(Constants.LOG_TAG, "STOMP wsMessage sent successfully");
