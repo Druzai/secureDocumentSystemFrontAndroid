@@ -1,12 +1,10 @@
 package ru.mirea.documenteditor.ui.activities.userInfoId;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import ru.mirea.documenteditor.data.payload.DocumentRight;
-import ru.mirea.documenteditor.data.payload.UserIdInfo;
-import ru.mirea.documenteditor.data.payload.UserInfo;
+import ru.mirea.documenteditor.data.model.api.document.DocumentRight;
+import ru.mirea.documenteditor.data.model.api.user.UserIdInfo;
 
 public class UserInfoIdActivityViewModel extends ViewModel {
 

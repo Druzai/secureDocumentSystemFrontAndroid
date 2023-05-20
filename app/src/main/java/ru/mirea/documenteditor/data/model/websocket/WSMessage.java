@@ -1,4 +1,4 @@
-package ru.mirea.documenteditor.data.payload;
+package ru.mirea.documenteditor.data.model.websocket;
 
 import java.util.ArrayList;
 

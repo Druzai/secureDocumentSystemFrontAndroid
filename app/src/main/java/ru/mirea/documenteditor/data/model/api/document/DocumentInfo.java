@@ -1,9 +1,11 @@
-package ru.mirea.documenteditor.data.payload;
+package ru.mirea.documenteditor.data.model.api.document;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+
+import ru.mirea.documenteditor.data.model.api.user.UserInfo;
 
 public class DocumentInfo implements Parcelable {
     private Long id;

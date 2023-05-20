@@ -5,18 +5,15 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.mirea.documenteditor.data.payload.AnswerBase;
-import ru.mirea.documenteditor.data.payload.AnswerBaseObj;
-import ru.mirea.documenteditor.data.payload.DocumentRight;
-import ru.mirea.documenteditor.data.payload.UserIdInfo;
-import ru.mirea.documenteditor.data.payload.UserInfo;
+import ru.mirea.documenteditor.data.model.api.base.AnswerBase;
+import ru.mirea.documenteditor.data.model.api.base.AnswerBaseObj;
+import ru.mirea.documenteditor.data.model.api.document.DocumentRight;
+import ru.mirea.documenteditor.data.model.api.user.UserIdInfo;
 import ru.mirea.documenteditor.util.Constants;
 import ru.mirea.documenteditor.util.RetrofitManager;
 import ru.mirea.documenteditor.util.Utilities;

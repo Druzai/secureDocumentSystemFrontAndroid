@@ -1,4 +1,4 @@
-package ru.mirea.documenteditor.data.payload;
+package ru.mirea.documenteditor.data.model.api.document;
 
 import android.os.Parcel;
 import android.os.Parcelable;

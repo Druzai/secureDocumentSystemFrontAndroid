@@ -6,10 +6,8 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.mirea.documenteditor.data.payload.DocumentIdEditor;
-import ru.mirea.documenteditor.data.payload.DocumentRight;
-import ru.mirea.documenteditor.data.payload.ParagraphInfo;
-import ru.mirea.documenteditor.data.payload.UserIdInfo;
+import ru.mirea.documenteditor.data.model.api.document.DocumentIdEditor;
+import ru.mirea.documenteditor.data.model.api.document.ParagraphInfo;
 
 public class DocumentIdActivityViewModel extends ViewModel {
 

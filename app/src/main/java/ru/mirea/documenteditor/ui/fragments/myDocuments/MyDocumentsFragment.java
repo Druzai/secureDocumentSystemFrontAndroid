@@ -19,7 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 
 import ru.mirea.documenteditor.data.adapter.DocumentsAdapter;
-import ru.mirea.documenteditor.data.payload.DocumentInfo;
+import ru.mirea.documenteditor.data.model.api.document.DocumentInfo;
 import ru.mirea.documenteditor.databinding.FragmentMyDocumentsBinding;
 import ru.mirea.documenteditor.ui.activities.documentId.DocumentIdActivity;
 

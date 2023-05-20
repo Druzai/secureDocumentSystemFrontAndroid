@@ -4,11 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import ru.mirea.documenteditor.data.payload.DocumentInfo;
-import ru.mirea.documenteditor.data.payload.UserIdInfo;
-import ru.mirea.documenteditor.ui.activities.userInfoId.UserInfoIdActivityRepository;
+import ru.mirea.documenteditor.data.model.api.document.DocumentInfo;
 
 public class MyDocumentsViewModel extends ViewModel {
 

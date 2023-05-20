@@ -21,8 +21,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import ru.mirea.documenteditor.data.payload.DocumentRight;
-import ru.mirea.documenteditor.data.payload.UserIdInfo;
+import ru.mirea.documenteditor.data.model.api.document.DocumentRight;
+import ru.mirea.documenteditor.data.model.api.user.UserIdInfo;
 import ru.mirea.documenteditor.databinding.ActivityUserInfoIdBinding;
 import ru.mirea.documenteditor.util.StringWithTag;
 

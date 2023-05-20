@@ -5,16 +5,15 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.mirea.documenteditor.data.payload.AnswerBase;
-import ru.mirea.documenteditor.data.payload.AnswerBaseObj;
-import ru.mirea.documenteditor.data.payload.InputMessage;
-import ru.mirea.documenteditor.data.payload.MyUserInfo;
+import ru.mirea.documenteditor.data.model.api.base.AnswerBase;
+import ru.mirea.documenteditor.data.model.api.base.AnswerBaseObj;
+import ru.mirea.documenteditor.data.model.api.cipher.InputMessage;
+import ru.mirea.documenteditor.data.model.api.user.MyUserInfo;
 import ru.mirea.documenteditor.util.aes.Cipher;
 
 public class Utilities {

@@ -6,8 +6,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import ru.mirea.documenteditor.data.payload.AnswerBase;
-import ru.mirea.documenteditor.data.payload.AuthenticationPayload;
+import ru.mirea.documenteditor.data.model.api.base.AnswerBase;
+import ru.mirea.documenteditor.data.model.api.auth.AuthenticationPayload;
 
 public interface AuthService {
     @Headers({"Accept: application/json"})

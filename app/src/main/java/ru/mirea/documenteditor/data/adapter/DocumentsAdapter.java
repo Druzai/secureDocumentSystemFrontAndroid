@@ -14,8 +14,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import ru.mirea.documenteditor.R;
-import ru.mirea.documenteditor.data.payload.DocumentInfo;
-import ru.mirea.documenteditor.data.payload.DocumentInfo;
+import ru.mirea.documenteditor.data.model.api.document.DocumentInfo;
 
 public class DocumentsAdapter extends RecyclerView.Adapter<DocumentsAdapter.ViewHolder> {
 

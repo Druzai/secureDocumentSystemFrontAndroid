@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.mirea.documenteditor.R;
-import ru.mirea.documenteditor.data.payload.DocumentInfo;
-import ru.mirea.documenteditor.data.payload.UserInfo;
+import ru.mirea.documenteditor.data.model.api.user.UserInfo;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
 

@@ -3,9 +3,6 @@ package ru.mirea.documenteditor.ui.activities.newDocument;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import ru.mirea.documenteditor.data.payload.DocumentRight;
-import ru.mirea.documenteditor.data.payload.UserIdInfo;
-
 public class NewDocumentActivityViewModel extends ViewModel {
 
     private MutableLiveData<String> mNewDocumentName;

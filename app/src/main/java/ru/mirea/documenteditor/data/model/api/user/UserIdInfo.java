@@ -1,6 +1,8 @@
-package ru.mirea.documenteditor.data.payload;
+package ru.mirea.documenteditor.data.model.api.user;
 
 import java.util.List;
+
+import ru.mirea.documenteditor.data.model.api.document.DocumentInfo;
 
 public class UserIdInfo {
     private String username;

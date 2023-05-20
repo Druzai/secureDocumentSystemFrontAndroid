@@ -1,7 +1,6 @@
 package ru.mirea.documenteditor.ui.activities.newDocument;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,10 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.ArrayList;
-
-import ru.mirea.documenteditor.data.payload.DocumentRight;
-import ru.mirea.documenteditor.data.payload.UserIdInfo;
 import ru.mirea.documenteditor.databinding.ActivityNewDocumentBinding;
 import ru.mirea.documenteditor.util.Constants;
 

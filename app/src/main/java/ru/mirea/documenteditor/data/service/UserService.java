@@ -8,12 +8,12 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import ru.mirea.documenteditor.data.payload.AnswerBase;
-import ru.mirea.documenteditor.data.payload.AnswerBaseObj;
-import ru.mirea.documenteditor.data.payload.DocumentRight;
-import ru.mirea.documenteditor.data.payload.MyUserInfo;
-import ru.mirea.documenteditor.data.payload.UserIdInfo;
-import ru.mirea.documenteditor.data.payload.UserInfo;
+import ru.mirea.documenteditor.data.model.api.base.AnswerBase;
+import ru.mirea.documenteditor.data.model.api.base.AnswerBaseObj;
+import ru.mirea.documenteditor.data.model.api.document.DocumentRight;
+import ru.mirea.documenteditor.data.model.api.user.MyUserInfo;
+import ru.mirea.documenteditor.data.model.api.user.UserIdInfo;
+import ru.mirea.documenteditor.data.model.api.user.UserInfo;
 
 public interface UserService {
     @GET("/api/user/me")

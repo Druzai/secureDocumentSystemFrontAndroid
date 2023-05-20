@@ -1,12 +1,11 @@
 package ru.mirea.documenteditor.ui.fragments.allUsers;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
-import ru.mirea.documenteditor.data.payload.UserInfo;
+import ru.mirea.documenteditor.data.model.api.user.UserInfo;
 
 public class AllUsersViewModel extends ViewModel {
 

@@ -11,8 +11,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.mirea.documenteditor.data.payload.AnswerBase;
-import ru.mirea.documenteditor.data.payload.UserInfo;
+import ru.mirea.documenteditor.data.model.api.base.AnswerBase;
+import ru.mirea.documenteditor.data.model.api.user.UserInfo;
 import ru.mirea.documenteditor.util.Constants;
 import ru.mirea.documenteditor.util.RetrofitManager;
 

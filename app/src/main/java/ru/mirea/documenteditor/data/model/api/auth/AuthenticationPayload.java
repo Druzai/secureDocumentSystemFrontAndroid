@@ -1,4 +1,4 @@
-package ru.mirea.documenteditor.data.payload;
+package ru.mirea.documenteditor.data.model.api.auth;
 
 public class AuthenticationPayload {
     private String username;
