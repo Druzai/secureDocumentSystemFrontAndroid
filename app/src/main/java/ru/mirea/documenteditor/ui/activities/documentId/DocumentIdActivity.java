@@ -119,7 +119,7 @@ public class DocumentIdActivity extends AppCompatActivity {
                 paragraphsEditText.setFocusable(false);
             }
             String username = documentIdEditor.getDocument().getLastEditBy() == null ? "никого" : documentIdEditor.getDocument().getLastEditBy();
-            lastEditTextView.setText(MessageFormat.format("Последнее изменение от {0}", username));
+            lastEditTextView.setText(MessageFormat.format("Изменение от {0}", username));
             paragraphsEditText.setText(
                     documentIdEditor.getDocumentParagraphs().stream()
                             .sorted(ParagraphInfo::compareTo)
