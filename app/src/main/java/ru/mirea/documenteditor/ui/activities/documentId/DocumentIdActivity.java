@@ -297,7 +297,7 @@ public class DocumentIdActivity extends AppCompatActivity {
             isSent.setValue(sendStompMessage(new WSMessage(documentId, username, "create", toSend)));
         } else if (contentsCopy.size() > dos.size()) {
             for (int i = dos.size(); i < contentsCopy.size(); i++) {
-                toSend.add(new WSContent(i, contentsCopy.get(i).getContent(), align));
+                toSend.add(new WSContent(i, contentsCopy.get(i).getContent(), null));
             }
             isSent.setValue(sendStompMessage(new WSMessage(documentId, username, "delete", toSend)));
             limit = dos.size();
