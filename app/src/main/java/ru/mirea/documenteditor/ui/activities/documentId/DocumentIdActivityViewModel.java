@@ -8,18 +8,19 @@ import java.util.List;
 
 import ru.mirea.documenteditor.data.model.api.document.DocumentIdEditor;
 import ru.mirea.documenteditor.data.model.api.document.ParagraphInfo;
+import ru.mirea.documenteditor.util.ThrottledLiveData;
 
 public class DocumentIdActivityViewModel extends ViewModel {
 
     private ArrayList<ParagraphInfo> documentParagraphListInMemory;
-    private MutableLiveData<ArrayList<ParagraphInfo>> mDocumentParagraphListInMemory;
+    private ThrottledLiveData<DocumentIdEditor> tmDocumentIdEditor;
     private MutableLiveData<DocumentIdEditor> mDocumentIdEditor;
     private DocumentIdActivityRepository documentIdActivityRepository;
 
 
     public void init() {
-        mDocumentParagraphListInMemory = new MutableLiveData<>();
         mDocumentIdEditor = new MutableLiveData<>();
+        tmDocumentIdEditor = new ThrottledLiveData<>(mDocumentIdEditor, 100L);
         documentIdActivityRepository = DocumentIdActivityRepository.getInstance();
         documentIdActivityRepository.init();
     }
@@ -36,12 +37,12 @@ public class DocumentIdActivityViewModel extends ViewModel {
         this.documentParagraphListInMemory = newDocumentParagraphList;
     }
 
-    public MutableLiveData<ArrayList<ParagraphInfo>> getLdDocumentParagraphListInMemory() {
-        return mDocumentParagraphListInMemory;
-    }
-
     public MutableLiveData<DocumentIdEditor> getDocumentIdEditor() {
         return mDocumentIdEditor;
+    }
+
+    public ThrottledLiveData<DocumentIdEditor> getTmDocumentIdEditor(){
+        return tmDocumentIdEditor;
     }
 
     public void fetchDocumentKey(MutableLiveData<Boolean> isDone, Integer documentId) {

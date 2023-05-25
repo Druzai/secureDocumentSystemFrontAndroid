@@ -2,7 +2,6 @@ package ru.mirea.documenteditor.ui.activities.documentId;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,7 +91,7 @@ public class DocumentIdActivity extends AppCompatActivity {
                 documentIdActivityViewModel.getDocument(documentId);
             }
             List<ParagraphInfo> paragraphInfoList = savedInstanceState.getParcelableArrayList("documentParagraphsInMemory");
-            if (paragraphInfoList != null){
+            if (paragraphInfoList != null) {
                 documentIdActivityViewModel.setDocumentParagraphListInMemory(paragraphInfoList);
                 setParagraphListInMemory = true;
             }
@@ -110,7 +109,7 @@ public class DocumentIdActivity extends AppCompatActivity {
             documentIdActivityViewModel.fetchDocumentKey(isFetchedKey, documentId);
         }
 
-        documentIdActivityViewModel.getDocumentIdEditor().observe(this, documentIdEditor -> {
+        documentIdActivityViewModel.getTmDocumentIdEditor().observe(this, documentIdEditor -> {
             if (documentIdEditor.isEditor() || documentIdEditor.isOwner()) {
                 paragraphsEditText.setEnabled(true);
                 paragraphsEditText.setFocusable(true);
@@ -149,7 +148,7 @@ public class DocumentIdActivity extends AppCompatActivity {
         if (documentIdEditor != null) {
             outState.putString("documentKey", cipher.getKeyBase64());
             outState.putParcelable("documentIdEditor", documentIdEditor);
-            outState.putParcelableArrayList("documentParagraphsInMemory", (ArrayList<? extends Parcelable>) documentIdActivityViewModel.getLdDocumentParagraphListInMemory().getValue());
+            outState.putParcelableArrayList("documentParagraphsInMemory", documentIdActivityViewModel.getDocumentParagraphListInMemory());
         }
     }
 
@@ -175,7 +174,7 @@ public class DocumentIdActivity extends AppCompatActivity {
     }
 
     public void connectStomp() {
-        stompClient.withClientHeartbeat(1000).withServerHeartbeat(1000);
+        stompClient.withClientHeartbeat(10000).withServerHeartbeat(10000);
         resetSubscriptions();
 
         Disposable dLifecycle = stompClient.lifecycle()
@@ -253,9 +252,8 @@ public class DocumentIdActivity extends AppCompatActivity {
                 );
                 break;
             case "delete":
-                for (WSContent wsContent : decodedMessage.getContent()) {
-                    paragraphInfoList.remove((int) wsContent.getNumber());
-                }
+                List<Integer> messageNumbers = decodedMessage.getContent().stream().map(WSContent::getNumber).collect(Collectors.toList());
+                paragraphInfoList = paragraphInfoList.stream().filter(p -> !messageNumbers.contains(p.getNumber())).collect(Collectors.toList());
                 break;
             case "edit":
                 for (WSContent wsContent : decodedMessage.getContent()) {
@@ -297,7 +295,7 @@ public class DocumentIdActivity extends AppCompatActivity {
             isSent.setValue(sendStompMessage(new WSMessage(documentId, username, "create", toSend)));
         } else if (contentsCopy.size() > dos.size()) {
             for (int i = dos.size(); i < contentsCopy.size(); i++) {
-                toSend.add(new WSContent(i, contentsCopy.get(i).getContent(), null));
+                toSend.add(new WSContent(i, "", ""));
             }
             isSent.setValue(sendStompMessage(new WSMessage(documentId, username, "delete", toSend)));
             limit = dos.size();
@@ -306,8 +304,7 @@ public class DocumentIdActivity extends AppCompatActivity {
 
 
         for (int i = 0; i < limit; i++) {
-            if (!contentsCopy.get(i).getContent().equals(dos.get(i).getContent()) ||
-                    !contentsCopy.get(i).getAlign().equals(dos.get(i).getAlign())) {
+            if (!contentsCopy.get(i).getContent().equals(dos.get(i).getContent())) {
                 toSend.add(new WSContent(i, dos.get(i).getContent(), align));
             }
         }
