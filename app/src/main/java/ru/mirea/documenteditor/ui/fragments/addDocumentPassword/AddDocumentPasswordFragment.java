@@ -63,7 +63,7 @@ public class AddDocumentPasswordFragment extends Fragment {
         rlAddDocumentPassword.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getContext(), "Список документов", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Обновляем список документов", Toast.LENGTH_SHORT).show();
                 addDocumentPasswordViewModel.fetchListDocumentInfoShort();
             }
         });
