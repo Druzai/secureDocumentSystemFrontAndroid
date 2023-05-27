@@ -22,4 +22,10 @@
         android:name="ru.mirea.documenteditor.ui.fragments.allUsers.AllUsersFragment"
         android:label="@string/menu_all_users"
         tools:layout="@layout/fragment_all_users" />
+
+    <fragment
+        android:id="@+id/nav_add_document_password"
+        android:name="ru.mirea.documenteditor.ui.fragments.addDocumentPassword.AddDocumentPasswordFragment"
+        android:label="@string/menu_add_document_password"
+        tools:layout="@layout/fragment_add_document_password" />
 </navigation>

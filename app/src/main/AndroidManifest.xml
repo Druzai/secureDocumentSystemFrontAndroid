@@ -18,6 +18,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activities.setPassword.SetPasswordActivity"
+            android:exported="false"
+            android:label="@string/title_activity_document_set_password" />
+        <activity
             android:name=".ui.activities.documentId.DocumentIdActivity"
             android:exported="false"
             android:label="@string/title_activity_document_id"

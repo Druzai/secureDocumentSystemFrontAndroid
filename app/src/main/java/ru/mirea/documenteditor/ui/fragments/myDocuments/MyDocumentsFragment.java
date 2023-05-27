@@ -22,6 +22,9 @@ import ru.mirea.documenteditor.data.adapter.DocumentsAdapter;
 import ru.mirea.documenteditor.data.model.api.document.DocumentInfo;
 import ru.mirea.documenteditor.databinding.FragmentMyDocumentsBinding;
 import ru.mirea.documenteditor.ui.activities.documentId.DocumentIdActivity;
+import ru.mirea.documenteditor.ui.activities.setPassword.SetPasswordActivity;
+import ru.mirea.documenteditor.util.Constants;
+import ru.mirea.documenteditor.util.PreferenceManager;
 
 public class MyDocumentsFragment extends Fragment {
 
@@ -29,7 +32,6 @@ public class MyDocumentsFragment extends Fragment {
     private SwipeRefreshLayout rlDocuments;
     private RecyclerView rvDocuments;
     private Context context;
-    private boolean enableDeleteButton = false;
     private FragmentMyDocumentsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -73,7 +75,7 @@ public class MyDocumentsFragment extends Fragment {
 
     private void setUpRecycleView(ArrayList<DocumentInfo> arrayDocumentInfo) {
         if (rvDocuments.getAdapter() == null) {
-            DocumentsAdapter adapter = new DocumentsAdapter(arrayDocumentInfo, enableDeleteButton);
+            DocumentsAdapter adapter = new DocumentsAdapter(arrayDocumentInfo);
             adapter.setOnOpenButtonClickListener(new DocumentsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
@@ -88,20 +90,21 @@ public class MyDocumentsFragment extends Fragment {
                 }
             });
 
-            if (enableDeleteButton) {
-                adapter.setOnDeleteButtonClickListener(new DocumentsAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View itemView, int position) {
-                        Long id = arrayDocumentInfo.get(position).getId();
-                        String name = arrayDocumentInfo.get(position).getName();
-                        Toast.makeText(context, "Удаляем документ " + name, Toast.LENGTH_SHORT).show();
+            adapter.setOnPasswordButtonClickListener(new DocumentsAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View itemView, int position) {
+                    Long id = arrayDocumentInfo.get(position).getId();
+                    String name = arrayDocumentInfo.get(position).getName();
+                    String ownerUsername = arrayDocumentInfo.get(position).getOwner().getUsername();
+                    Toast.makeText(context, "Переходим к задаванию пароля на документ " + name, Toast.LENGTH_SHORT).show();
 
-//                Intent myIntent = new Intent(context, UserInfoIdActivity.class);
-//                myIntent.putExtra("id", id);
-//                context.startActivity(myIntent);
-                    }
-                });
-            }
+                    Intent myIntent = new Intent(context, SetPasswordActivity.class);
+                    myIntent.putExtra("id", id);
+                    myIntent.putExtra("name", name);
+                    myIntent.putExtra("owner", ownerUsername.equals(PreferenceManager.getInstance().getString(Constants.USER_NAME)));
+                    context.startActivity(myIntent);
+                }
+            });
 
             rvDocuments.setAdapter(adapter);
             rvDocuments.setLayoutManager(new LinearLayoutManager(context));

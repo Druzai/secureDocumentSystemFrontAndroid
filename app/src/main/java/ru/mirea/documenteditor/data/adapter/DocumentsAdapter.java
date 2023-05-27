@@ -19,11 +19,9 @@ import ru.mirea.documenteditor.data.model.api.document.DocumentInfo;
 public class DocumentsAdapter extends RecyclerView.Adapter<DocumentsAdapter.ViewHolder> {
 
     private List<DocumentInfo> mDocumentsInfo;
-    private boolean enableDeleteButton;
 
-    public DocumentsAdapter(List<DocumentInfo> documentInfoList, boolean enableDeleteButton) {
+    public DocumentsAdapter(List<DocumentInfo> documentInfoList) {
         mDocumentsInfo = documentInfoList;
-        this.enableDeleteButton = enableDeleteButton;
     }
 
     public void swap(List<DocumentInfo> list){
@@ -63,13 +61,9 @@ public class DocumentsAdapter extends RecyclerView.Adapter<DocumentsAdapter.View
         nameTextView.setText(MessageFormat.format("Документ: {0}", DocumentInfo.getName()));
         ownerTextView.setText(MessageFormat.format("Владелец: {0}", DocumentInfo.getOwner().getUsername()));
         Button openButton = holder.openMessageButton;
-        Button deleteButton = holder.deleteMessageButton;
+        Button passwordButton = holder.passwordMessageButton;
         openButton.setEnabled(true);
-        if (enableDeleteButton){
-            deleteButton.setEnabled(true);
-        } else{
-            deleteButton.setVisibility(View.GONE);
-        }
+        passwordButton.setEnabled(true);
     }
 
     @Override
@@ -82,21 +76,21 @@ public class DocumentsAdapter extends RecyclerView.Adapter<DocumentsAdapter.View
     }
 
     private OnItemClickListener openMessageButtonListener;
-    private OnItemClickListener deleteMessageButtonListener;
+    private OnItemClickListener passwordMessageButtonListener;
 
     public void setOnOpenButtonClickListener(OnItemClickListener listener) {
         this.openMessageButtonListener = listener;
     }
 
-    public void setOnDeleteButtonClickListener(OnItemClickListener listener) {
-        this.deleteMessageButtonListener = listener;
+    public void setOnPasswordButtonClickListener(OnItemClickListener listener) {
+        this.passwordMessageButtonListener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
         public TextView ownerTextView;
         public Button openMessageButton;
-        public Button deleteMessageButton;
+        public Button passwordMessageButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -104,7 +98,7 @@ public class DocumentsAdapter extends RecyclerView.Adapter<DocumentsAdapter.View
             nameTextView = (TextView) itemView.findViewById(R.id.document_name);
             ownerTextView = (TextView) itemView.findViewById(R.id.document_owner);
             openMessageButton = (Button) itemView.findViewById(R.id.bt_document_open);
-            deleteMessageButton = (Button) itemView.findViewById(R.id.bt_document_delete);
+            passwordMessageButton = (Button) itemView.findViewById(R.id.bt_document_password);
 
             openMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,14 +113,14 @@ public class DocumentsAdapter extends RecyclerView.Adapter<DocumentsAdapter.View
                 }
             });
 
-            deleteMessageButton.setOnClickListener(new View.OnClickListener() {
+            passwordMessageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Triggers click upwards to the adapter on click
-                    if (deleteMessageButtonListener != null) {
+                    if (passwordMessageButtonListener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            deleteMessageButtonListener.onItemClick(itemView, position);
+                            passwordMessageButtonListener.onItemClick(itemView, position);
                         }
                     }
                 }

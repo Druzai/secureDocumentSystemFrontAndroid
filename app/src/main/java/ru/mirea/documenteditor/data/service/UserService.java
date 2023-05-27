@@ -12,6 +12,7 @@ import ru.mirea.documenteditor.data.model.api.base.AnswerBase;
 import ru.mirea.documenteditor.data.model.api.base.AnswerBaseObj;
 import ru.mirea.documenteditor.data.model.api.document.DocumentRight;
 import ru.mirea.documenteditor.data.model.api.user.MyUserInfo;
+import ru.mirea.documenteditor.data.model.api.user.RoleInfo;
 import ru.mirea.documenteditor.data.model.api.user.UserIdInfo;
 import ru.mirea.documenteditor.data.model.api.user.UserInfo;
 
@@ -27,4 +28,7 @@ public interface UserService {
 
     @GET("/api/user/all")
     Call<AnswerBase<List<UserInfo>>> getAll();
+
+    @GET("/api/user/roleRights")
+    Call<AnswerBase<List<RoleInfo>>> getRoleRights();
 }

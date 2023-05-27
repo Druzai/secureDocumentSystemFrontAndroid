@@ -17,6 +17,10 @@
             android:icon="@android:drawable/ic_menu_search"
             android:title="@string/menu_all_users" />
         <item
+            android:id="@+id/nav_add_document_password"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/menu_add_document_password" />
+        <item
             android:id="@+id/nav_logout"
             android:icon="?attr/homeAsUpIndicator"
             android:title="@string/menu_logout" />

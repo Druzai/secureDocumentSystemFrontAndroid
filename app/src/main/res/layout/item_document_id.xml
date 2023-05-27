@@ -47,14 +47,14 @@
             android:text="Владелец: " />
 
         <Button
-            android:id="@+id/bt_document_delete"
+            android:id="@+id/bt_document_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|clip_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:backgroundTint="@color/red"
-            android:text="Удалить"
+            android:backgroundTint="@color/teal_700"
+            android:text="Задать пароль"
             android:textSize="12sp" />
     </LinearLayout>
 

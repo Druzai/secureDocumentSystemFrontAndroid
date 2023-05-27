@@ -37,7 +37,7 @@ public class MyDocumentsRepository {
         if (!token.isPresent()){
             return;
         }
-        Call<AnswerBase<List<DocumentInfo>>> call = retrofitManager.getDocumentService().getDocuments(
+        Call<AnswerBase<List<DocumentInfo>>> call = retrofitManager.getDocumentService().getDocumentsByUser(
                 token.get()
         );
         call.enqueue(new Callback<AnswerBase<List<DocumentInfo>>>() {
